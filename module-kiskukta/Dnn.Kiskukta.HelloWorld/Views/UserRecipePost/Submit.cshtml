@@ -1,0 +1,37 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models.UserRecipePostInfo>
+
+<div class="kiskukta-module">
+    <h2>Új recept beküldése</h2>
+
+    <p>
+        <a href="@Url.Action("Index")">Vissza a listához</a>
+    </p>
+
+    @if (ViewBag.Message != null)
+    {
+        <div style="margin-bottom:15px; padding:10px; border:1px solid #ccc;">
+            @ViewBag.Message
+        </div>
+    }
+
+    <form action="@Url.Action("Submit")" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="ModuleId" value="@Model.ModuleId" />
+
+        <p>
+            <label>Recept neve</label><br />
+            <input type="text" name="RecipeName" value="@Model.RecipeName" />
+        </p>
+
+        <p>
+            <label>Komment</label><br />
+            <textarea name="CommentText">@Model.CommentText</textarea>
+        </p>
+
+        <p>
+            <label>Kép feltöltése</label><br />
+            <input type="file" name="imageFile" />
+        </p>
+
+        <button type="submit">Beküldés</button>
+    </form>
+</div>

@@ -18,7 +18,7 @@ using DotNetNuke.Entities.Content;
 
 namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models
 {
-    [TableName("Dnn.Kiskukta.HelloWorld_Items")]
+    [TableName("UserRecipePosts")]
     //setup the primary key for table
     [PrimaryKey("ItemId", AutoIncrement = true)]
     //configure caching using PetaPoco

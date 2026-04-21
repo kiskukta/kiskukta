@@ -1,100 +1,123 @@
 <dotnetnuke type="Package" version="5.0">
-  <packages>
-    <package name="Dnn.Kiskukta.HelloWorld" type="Module" version="00.00.01">
-      <friendlyName>Dnn.Kiskukta.HelloWorld</friendlyName>
-      <description>Dnn.Kiskukta.HelloWorld</description>
-      <iconFile>~/Icons/Sigma/Software_32X32_Standard.png</iconFile>
-      <owner>
-        <name>Kiskukta</name>
-        <organization>Kiskukta</organization>
-        <url>https://20.123.45.147/</url>
-        <email>kiskuktaa20@gmail.com</email>
-      </owner>
-      <license src="License.txt"></license>
-      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
-      <dependencies>
-        <dependency type="CoreVersion">09.08.00</dependency>
-      </dependencies>
-      <components>
-        <component type="Script">
-          <scripts>
-            <basePath>DesktopModules\MVC\Dnn.Kiskukta.HelloWorld</basePath>
-            <script type="Install">
-              <path>Providers\DataProviders\SqlDataProvider</path>
-              <name>00.00.01.SqlDataProvider</name>
-              <version>00.00.01</version>
-            </script>
-            <script type="UnInstall">
-              <path>Providers\DataProviders\SqlDataProvider</path>
-              <name>Uninstall.SqlDataProvider</name>
-              <version>00.00.01</version>
-            </script>
-          </scripts>
-        </component>
-        <component type="ResourceFile">
-          <resourceFiles>
-            <basePath>DesktopModules/MVC/Dnn.Kiskukta.HelloWorld</basePath>
-            <resourceFile>
-              <name>Resources.zip</name>
-            </resourceFile>
-          </resourceFiles>
-        </component>
-        <component type="Module">
-          <desktopModule>
-            <moduleName>Dnn.Kiskukta.HelloWorld</moduleName>
-            <foldername>Dnn.Kiskukta.HelloWorld</foldername>
-            <businessControllerClass>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components.FeatureController</businessControllerClass>
-            <supportedFeatures />
-            <moduleDefinitions>
-              <moduleDefinition>
-                <friendlyName>Dnn.Kiskukta.HelloWorld</friendlyName>
-                <defaultCacheTime>0</defaultCacheTime>
-                <moduleControls>
-                  <moduleControl>
-                    <controlKey />
-                    <controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/Item/Index.mvc</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Edit</controlKey>
-                    <controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/Item/Edit.mvc</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Edit Content</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                    <supportsPopUps>True</supportsPopUps>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Settings</controlKey>
-                    <controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/Settings/Settings.mvc</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Dnn.Kiskukta.HelloWorld Settings</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                </moduleControls>
-              </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>
-        </component>
-        <component type="Assembly">
-          <assemblies>
-            <assembly>
-              <name>Dnn.Kiskukta.HelloWorld.dll</name>
-              <path>bin</path>
-            </assembly>
-          </assemblies>
-        </component>
-      </components>
-    </package>
-  </packages>
+	<packages>
+		<package name="Dnn.Kiskukta.HelloWorld" type="Module" version="00.00.02">
+
+			<friendlyName>Dnn.Kiskukta.HelloWorld</friendlyName>
+			<description>Kiskukta recept modul</description>
+			<iconFile>~/Icons/Sigma/Software_32X32_Standard.png</iconFile>
+
+			<owner>
+				<name>Kiskukta</name>
+				<organization>Kiskukta</organization>
+				<url>https://20.123.45.147/</url>
+				<email>kiskuktaa20@gmail.com</email>
+			</owner>
+
+			<license src="License.txt"></license>
+			<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+
+			<dependencies>
+				<dependency type="CoreVersion">09.08.00</dependency>
+			</dependencies>
+
+			<components>
+
+				<!-- SQL script -->
+				<component type="Script">
+					<scripts>
+						<basePath>DesktopModules\MVC\Dnn.Kiskukta.HelloWorld</basePath>
+
+						<script type="Install">
+							<path>Providers\DataProviders\SqlDataProvider</path>
+							<name>00.00.01.SqlDataProvider</name>
+							<version>00.00.01</version>
+						</script>
+
+						<script type="UnInstall">
+							<path>Providers\DataProviders\SqlDataProvider</path>
+							<name>Uninstall.SqlDataProvider</name>
+							<version>00.00.01</version>
+						</script>
+
+					</scripts>
+				</component>
+
+				<!-- Resources -->
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules/MVC/Dnn.Kiskukta.HelloWorld</basePath>
+						<resourceFile>
+							<name>Resources.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+
+				<!-- Module definition -->
+				<component type="Module">
+					<desktopModule>
+						<moduleName>Dnn.Kiskukta.HelloWorld</moduleName>
+						<foldername>Dnn.Kiskukta.HelloWorld</foldername>
+
+						<businessControllerClass>
+							Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components.FeatureController
+						</businessControllerClass>
+
+						<supportedFeatures />
+
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>Dnn.Kiskukta.HelloWorld</friendlyName>
+								<defaultCacheTime>0</defaultCacheTime>
+
+								<moduleControls>
+
+									<!-- FŐ VIEW (EZ KELL CSAK) -->
+									<moduleControl>
+										<controlKey />
+										<controlSrc>
+											Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Index.mvc
+										</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+
+									<!-- SETTINGS (optional) -->
+									<moduleControl>
+										<controlKey>Settings</controlKey>
+										<controlSrc>
+											Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/Settings/Settings.mvc
+										</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Module Settings</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+
+								</moduleControls>
+
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+				</component>
+
+				<!-- DLL -->
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<name>Dnn.Kiskukta.HelloWorld.dll</name>
+							<path>bin</path>
+						</assembly>
+					</assemblies>
+				</component>
+
+			</components>
+
+		</package>
+	</packages>
 </dotnetnuke>
