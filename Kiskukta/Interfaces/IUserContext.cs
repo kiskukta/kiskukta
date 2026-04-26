@@ -4,5 +4,6 @@
     {
         bool IsAuthenticated { get; }
         int UserId { get; }
+        bool IsAdmin { get; }
     }
 }

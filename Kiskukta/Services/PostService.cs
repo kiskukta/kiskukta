@@ -36,5 +36,16 @@ namespace Kiskukta.Services
 
             _repo.Add(post);
         }
+        public void ApprovePost(int postId)
+        {
+            if (!_user.IsAdmin)
+                throw new UnauthorizedAccessException();
+
+            var post = _repo.GetById(postId);
+
+            post.Status = PostStatus.Approved;
+
+            _repo.Update(post);
+        }
     }
 }
