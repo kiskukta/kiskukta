@@ -8,9 +8,12 @@
 /*****                                                  *****/
 /************************************************************/
 
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
 IF NOT EXISTS (
-    SELECT * 
-    FROM sys.objects 
+    SELECT * FROM sys.objects
     WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRecipePosts]')
       AND type IN (N'U')
 )
@@ -19,14 +22,31 @@ BEGIN
     (
         [PostId] INT IDENTITY(1,1) NOT NULL,
         [ModuleId] INT NOT NULL,
+        [ProductId] INT NULL,
         [RecipeName] NVARCHAR(200) NOT NULL,
         [CommentText] NVARCHAR(1000) NOT NULL,
         [ImagePath] NVARCHAR(500) NULL,
         [CreatedByUserId] INT NOT NULL,
+        [CreatedByDisplayName] NVARCHAR(200) NULL,
         [CreatedOnDate] DATETIME NOT NULL DEFAULT GETDATE(),
-        [Status] NVARCHAR(50) NOT NULL,
+        [Status] NVARCHAR(50) NOT NULL DEFAULT 'Pending',
+
         CONSTRAINT [PK_UserRecipePosts] PRIMARY KEY CLUSTERED ([PostId] ASC)
     )
+END
+GO
+
+IF COL_LENGTH('{databaseOwner}{objectQualifier}UserRecipePosts', 'ProductId') IS NULL
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}UserRecipePosts]
+    ADD [ProductId] INT NULL
+END
+GO
+
+IF COL_LENGTH('{databaseOwner}{objectQualifier}UserRecipePosts', 'CreatedByDisplayName') IS NULL
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}UserRecipePosts]
+    ADD [CreatedByDisplayName] NVARCHAR(200) NULL
 END
 GO
 
