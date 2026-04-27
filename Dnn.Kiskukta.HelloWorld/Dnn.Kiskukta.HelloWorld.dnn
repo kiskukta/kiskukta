@@ -22,7 +22,7 @@
 
 			<components>
 
-				<!-- SQL script -->
+				<!-- SQL -->
 				<component type="Script">
 					<scripts>
 						<basePath>DesktopModules\MVC\Dnn.Kiskukta.HelloWorld</basePath>
@@ -42,7 +42,7 @@
 					</scripts>
 				</component>
 
-				<!-- Resources -->
+				<!-- Resource -->
 				<component type="ResourceFile">
 					<resourceFiles>
 						<basePath>DesktopModules/MVC/Dnn.Kiskukta.HelloWorld</basePath>
@@ -52,9 +52,10 @@
 					</resourceFiles>
 				</component>
 
-				<!-- Module definition -->
+				<!-- MODULE -->
 				<component type="Module">
 					<desktopModule>
+
 						<moduleName>Dnn.Kiskukta.HelloWorld</moduleName>
 						<foldername>Dnn.Kiskukta.HelloWorld</foldername>
 
@@ -66,11 +67,13 @@
 
 						<moduleDefinitions>
 							<moduleDefinition>
-								<friendlyName>Dnn.Kiskukta.HelloWorld</friendlyName>
+
+								<friendlyName>Kiskukta Recept Modul</friendlyName>
 								<defaultCacheTime>0</defaultCacheTime>
 
 								<moduleControls>
 
+									<!-- FŐ NÉZET -->
 									<moduleControl>
 										<controlKey />
 										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Index.mvc</controlSrc>
@@ -80,6 +83,7 @@
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 
+									<!-- SUBMIT -->
 									<moduleControl>
 										<controlKey>Submit</controlKey>
 										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Submit.mvc</controlSrc>
@@ -89,6 +93,7 @@
 										<viewOrder>1</viewOrder>
 									</moduleControl>
 
+									<!-- MODERATION -->
 									<moduleControl>
 										<controlKey>Moderation</controlKey>
 										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Moderation.mvc</controlSrc>
@@ -98,37 +103,21 @@
 										<viewOrder>2</viewOrder>
 									</moduleControl>
 
+									<!-- SETTINGS -->
 									<moduleControl>
-										<controlKey>Approve</controlKey>
-										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Approve.mvc</controlSrc>
+										<controlKey>Settings</controlKey>
+										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/Settings/Settings.mvc</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle>Elfogadás</controlTitle>
-										<controlType>View</controlType>
-										<viewOrder>3</viewOrder>
-									</moduleControl>
-
-									<moduleControl>
-										<controlKey>Reject</controlKey>
-										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Reject.mvc</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle>Elutasítás</controlTitle>
-										<controlType>View</controlType>
-										<viewOrder>4</viewOrder>
-									</moduleControl>
-
-									<moduleControl>
-										<controlKey>Delete</controlKey>
-										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Delete.mvc</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle>Törlés</controlTitle>
-										<controlType>View</controlType>
-										<viewOrder>5</viewOrder>
+										<controlTitle>Beállítások</controlTitle>
+										<controlType>Edit</controlType>
+										<viewOrder>0</viewOrder>
 									</moduleControl>
 
 								</moduleControls>
 
 							</moduleDefinition>
 						</moduleDefinitions>
+
 					</desktopModule>
 				</component>
 

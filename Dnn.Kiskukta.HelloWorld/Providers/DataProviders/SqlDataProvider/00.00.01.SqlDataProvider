@@ -1,15 +1,5 @@
 ﻿/************************************************************/
 /*****              SqlDataProvider                     *****/
-/*****                                                  *****/
-/*****                                                  *****/
-/***** Note: To manually execute this script you must   *****/
-/*****       perform a search and replace operation     *****/
-/*****       for {databaseOwner} and {objectQualifier}  *****/
-/*****                                                  *****/
-/************************************************************/
-
-/************************************************************/
-/*****              SqlDataProvider                     *****/
 /************************************************************/
 
 IF NOT EXISTS (
@@ -22,7 +12,6 @@ BEGIN
     (
         [PostId] INT IDENTITY(1,1) NOT NULL,
         [ModuleId] INT NOT NULL,
-        [ProductId] INT NULL,
         [RecipeName] NVARCHAR(200) NOT NULL,
         [CommentText] NVARCHAR(1000) NOT NULL,
         [ImagePath] NVARCHAR(500) NULL,
@@ -36,20 +25,9 @@ BEGIN
 END
 GO
 
-IF COL_LENGTH('{databaseOwner}{objectQualifier}UserRecipePosts', 'ProductId') IS NULL
-BEGIN
-    ALTER TABLE {databaseOwner}[{objectQualifier}UserRecipePosts]
-    ADD [ProductId] INT NULL
-END
-GO
-
 IF COL_LENGTH('{databaseOwner}{objectQualifier}UserRecipePosts', 'CreatedByDisplayName') IS NULL
 BEGIN
     ALTER TABLE {databaseOwner}[{objectQualifier}UserRecipePosts]
     ADD [CreatedByDisplayName] NVARCHAR(200) NULL
 END
 GO
-
-/************************************************************/
-/*****              SqlDataProvider                     *****/
-/************************************************************/
