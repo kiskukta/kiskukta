@@ -1,40 +1,116 @@
+
+/* FÕ KONTAINER */
 .kiskukta-module {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
 }
 
+/* HEADER */
+.kiskukta-header h1 {
+    margin-bottom: 5px;
+}
+
+.kiskukta-header h3 {
+    margin-top: 0;
+    color: #555;
+}
+
+/* GRID – EZ TESZI EGYMÁS MELLÉ */
+.recipe-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* KÁRTYA */
 .recipe-card {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    padding: 10px;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
     border: 1px solid #ddd;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.2s;
 }
 
+    .recipe-card:hover {
+        transform: translateY(-4px);
+    }
+
+/* KÉP */
 .recipe-image {
-    width: 120px;
-    height: 90px;
+    width: 100%;
+    height: 180px;
     object-fit: cover;
-    border-radius: 8px;
+    display: block;
 }
 
-.recipe-content h3 {
-    margin: 0;
+/* SZÖVEG BLOKK */
+.recipe-body {
+    padding: 12px;
 }
 
-.recipe-meta {
+/* RECEPT NÉV */
+.recipe-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+/* USER + DÁTUM */
+.recipe-meta-row {
+    display: flex;
+    justify-content: space-between;
     font-size: 12px;
-    color: gray;
+    color: #777;
+    margin-bottom: 8px;
 }
 
+.recipe-user {
+    font-weight: 500;
+}
+
+.recipe-date {
+    opacity: 0.8;
+}
+
+/* KOMMENT */
+.recipe-comment {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+}
+
+/* GOMB */
 .kiskukta-button {
+    display: inline-block;
     padding: 8px 12px;
     background: #8b4a24;
     color: white;
     border-radius: 6px;
     text-decoration: none;
+    margin-top: 10px;
 }
 
+    .kiskukta-button:hover {
+        background: #6f3b1c;
+    }
 
+/* ÜRES ÁLLAPOT */
+.empty-box {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px dashed #ccc;
+    text-align: center;
+    color: #777;
+}
+
+/* ÜZENET */
+.message-box {
+    padding: 10px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    margin-top: 10px;
+    border-radius: 6px;
+}

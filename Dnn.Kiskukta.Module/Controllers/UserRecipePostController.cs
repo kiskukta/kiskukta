@@ -88,13 +88,13 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
             {
                 if (string.IsNullOrWhiteSpace(postInfo.RecipeName))
                 {
-                    ViewBag.Message = "A recept neve kötelező.";
+                    ViewBag.Message = "A recept nevének kitöltése kötelező.";
                     return View(postInfo);
                 }
 
                 if (string.IsNullOrWhiteSpace(postInfo.CommentText))
                 {
-                    ViewBag.Message = "A komment kötelező.";
+                    ViewBag.Message = "Megjegyzés írása kötelező.";
                     return View(postInfo);
                 }
 
@@ -145,7 +145,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
                 _postManager.CreatePost(postInfo);
 
-                TempData["Message"] = "Sikeres beküldés! A recept függőben van, moderációra vár.";
+                TempData["Message"] = "Sikeres beküldés! Hozzászólásod jóváhagyásra vár.";
                 return RedirectToAction("Submit", new { ctl = "Submit" });
             }
             catch (Exception ex)
@@ -182,7 +182,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
             var success = _postManager.UpdateStatus(postId, "Approved");
 
             TempData["Message"] = success
-                ? "A recept megjelenítve."
+                ? "Hozzászólás megjelenítve."
                 : "A megjelenítés nem sikerült.";
 
             return RedirectToAction("Moderation", new { ctl = "Moderation" });
@@ -200,7 +200,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
             var success = _postManager.UpdateStatus(postId, "Rejected");
 
             TempData["Message"] = success
-                ? "A recept elrejtve."
+                ? "Hozzászólás elrejtve."
                 : "Az elrejtés nem sikerült.";
 
             return RedirectToAction("Moderation", new { ctl = "Moderation" });

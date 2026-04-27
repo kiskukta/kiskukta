@@ -11,7 +11,7 @@
     @if (Request.IsAuthenticated)
     {
         <p>
-            <a class="kiskukta-button" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
+            <a class="kiskukta-link" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
                 Új recept beküldése
             </a>
         </p>
@@ -19,7 +19,7 @@
     else
     {
         <div class="message-box">
-                    Szólj hozzá te is! A kommenteléshez bejelentkezés szükséges.
+            Szólj hozzá te is! A kommenteléshez bejelentkezés szükséges.
         </div>
     }
 
@@ -29,34 +29,38 @@
 
     @if (Model != null)
     {
-        foreach (var post in Model)
-        {
-            hasPosts = true;
+        <div class="recipe-list">
 
-            <div class="recipe-card">
-                @if (!string.IsNullOrWhiteSpace(post.ImagePath))
-                {
-                    <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
-                }
+            @foreach (var post in Model)
+            {
+                hasPosts = true;
 
-                <div class="recipe-content">
-                    <h3>@post.RecipeName</h3>
+                <div class="recipe-card">
 
-                    <p class="recipe-comment">
-                        @post.CommentText
-                    </p>
+                    @if (!string.IsNullOrWhiteSpace(post.ImagePath))
+                    {
+                        <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
+                    }
 
-                    <div class="recipe-meta">
-                        @if (!string.IsNullOrWhiteSpace(post.CreatedByDisplayName))
-                        {
-                            <span>Beküldő: @post.CreatedByDisplayName</span>
-                        }
+                    <div class="recipe-body">
+                        <div class="recipe-title">
+                            @post.RecipeName
+                        </div>
 
-                        <span>Dátum: @post.CreatedOnDate.ToString("yyyy.MM.dd. HH:mm")</span>
+                        <div class="recipe-meta-row">
+                            <span class="recipe-user">@post.CreatedByDisplayName</span>
+                            <span class="recipe-date">@post.CreatedOnDate.ToString("yyyy.MM.dd.")</span>
+                        </div>
+
+                        <div class="recipe-comment">
+                            @post.CommentText
+                        </div>
                     </div>
+
                 </div>
-            </div>
-        }
+            }
+
+        </div>
     }
 
     @if (!hasPosts)
