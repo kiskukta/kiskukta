@@ -1,0 +1,38 @@
+.kiskukta-module {
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial;
+}
+
+.recipe-card {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.recipe-image {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.recipe-content h3 {
+    margin: 0;
+}
+
+.recipe-meta {
+    font-size: 12px;
+    color: gray;
+}
+
+.kiskukta-button {
+    padding: 8px 12px;
+    background: #8b4a24;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+}
