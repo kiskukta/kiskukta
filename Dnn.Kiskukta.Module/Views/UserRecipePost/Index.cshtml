@@ -4,8 +4,8 @@
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
-        <h2>Beküldött receptek</h2>
-        <p>Közösségi receptek és hozzászólások.</p>
+        <h1>Közösségi Kedvenceink</h1>
+        <h3>Nézd meg, mit főztek a többiek!</h3>
     </div>
 
     @if (Request.IsAuthenticated)
@@ -19,7 +19,7 @@
     else
     {
         <div class="message-box">
-            Komment beküldéséhez kérjük, jelentkezz be.
+                    Szólj hozzá te is! A kommenteléshez bejelentkezés szükséges.
         </div>
     }
 
@@ -62,7 +62,7 @@
     @if (!hasPosts)
     {
         <div class="empty-box">
-            Még nincs jóváhagyott recept.
+            Még nem érkezett vélemény. Légy te az első!
         </div>
     }
 </div>

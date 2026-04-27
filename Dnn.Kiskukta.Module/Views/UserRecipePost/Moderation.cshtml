@@ -4,8 +4,8 @@
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
-        <h2>Moderáció</h2>
-        <p>Adminisztrátorként itt dönthetsz a beküldött receptekről.</p>
+        <h1>Moderáció</h1>
+        <h3>Itt kezelheted és hagyhatod jóvá a beérkezett recepteket.</h3>
     </div>
 
     @if (ViewBag.Message != null)
@@ -95,7 +95,7 @@
     @if (!hasPosts)
     {
         <div class="empty-box">
-            Nincs moderálandó tartalom.
+            Jelenleg nincs beküldött recept a rendszerben.
         </div>
     }
 </div>
