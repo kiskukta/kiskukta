@@ -3,66 +3,69 @@
 <div class="kiskukta-module">
     <h2>Moderáció</h2>
 
-    <p>
-        <a href="@Url.Action("Index")">Vissza a listához</a>
-    </p>
-
     @if (ViewBag.Message != null)
     {
-        <div style="margin-bottom:15px; padding:10px; border:1px solid #ccc;">
+        <div class="message-box">
             @ViewBag.Message
         </div>
     }
 
-    @if (Model == null)
-    {
-        <p>Nincs moderálandó tartalom.</p>
+    @{
+        bool hasPosts = false;
     }
-    else
-    {
-        var hasPosts = false;
 
+    @if (Model != null)
+    {
         foreach (var post in Model)
         {
             hasPosts = true;
 
-            <div style="border:1px solid #ccc; margin-bottom:10px; padding:10px;">
+            <div class="recipe-post moderation-post">
                 <h3>@post.RecipeName</h3>
 
                 <p><strong>ID:</strong> @post.PostId</p>
-                <p><strong>Beküldő azonosító:</strong> @post.CreatedByUserId</p>
-                <p><strong>Státusz:</strong> @post.Status</p>
+                <p><strong>Beküldő:</strong> @post.CreatedByDisplayName (@post.CreatedByUserId)</p>
+                <p><strong>Dátum:</strong> @post.CreatedOnDate.ToString("yyyy.MM.dd. HH:mm")</p>
+
+                <p>
+                    <strong>Státusz:</strong>
+                    <span>@post.StatusDisplay</span>
+                </p>
+
                 <p>@post.CommentText</p>
 
                 @if (!string.IsNullOrWhiteSpace(post.ImagePath))
                 {
-                    <p>
-                        <img src="@post.ImagePath" style="max-width:300px;" />
-                    </p>
+                    <img src="@post.ImagePath" class="recipe-image" />
                 }
 
-                <form action="@Url.Action("Approve")" method="post" style="display:inline-block;">
+                <form action="@Url.Action("Approve", "UserRecipePost", new { ctl = "Approve" })"
+                      method="post"
+                      style="display:inline-block;">
                     <input type="hidden" name="postId" value="@post.PostId" />
-                    <button type="submit">Jóváhagyás</button>
+                    <button type="submit">Elfogadás</button>
                 </form>
 
-                <form action="@Url.Action("Reject")" method="post" style="display:inline-block;">
+                <form action="@Url.Action("Reject", "UserRecipePost", new { ctl = "Reject" })"
+                      method="post"
+                      style="display:inline-block;">
                     <input type="hidden" name="postId" value="@post.PostId" />
                     <button type="submit">Elutasítás</button>
                 </form>
 
-                <form action="@Url.Action("Delete")" method="post" style="display:inline-block;">
+                <form action="@Url.Action("Delete", "UserRecipePost", new { ctl = "Delete" })"
+                      method="post"
+                      style="display:inline-block;"
+                      onsubmit="return confirm('Biztosan törölni szeretnéd ezt a receptet?');">
                     <input type="hidden" name="postId" value="@post.PostId" />
-                    <button type="submit" onclick="return confirm('Biztosan törölni szeretnéd?');">
-                        Törlés
-                    </button>
+                    <button type="submit">Törlés</button>
                 </form>
             </div>
         }
+    }
 
-        if (!hasPosts)
-        {
-            <p>Nincs moderálandó tartalom.</p>
-        }
+    @if (!hasPosts)
+    {
+        <p>Nincs moderálandó tartalom.</p>
     }
 </div>
