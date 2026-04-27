@@ -1,5 +1,4 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models.UserRecipePostInfo>>
-@using System.Linq
 
 <div class="kiskukta-module">
     <h2>Beküldött receptek</h2>
@@ -17,14 +16,16 @@
         <p>Kérjük <a href="/Login">jelentkezz be a recept beküldéséhez.</a></p>
     }
 
-    @if (Model == null || !Model.Any())
-    {
-        <p>Még nincs jóváhagyott recept.</p>
+    @{
+        bool hasPosts = false;
     }
-    else
+
+    @if (Model != null)
     {
         foreach (var post in Model)
         {
+            hasPosts = true;
+
             <div class="recipe-post">
                 <h3>@post.RecipeName</h3>
 
@@ -45,5 +46,10 @@
                 </p>
             </div>
         }
+    }
+
+    @if (!hasPosts)
+    {
+        <p>Még nincs jóváhagyott recept.</p>
     }
 </div>
