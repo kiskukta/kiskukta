@@ -18,20 +18,15 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components
             _tableName = DataProvider.Instance().ObjectQualifier + "UserRecipePosts";
         }
 
-        public List<UserRecipePostInfo> GetPosts(int moduleId, int? productId = null, bool approvedOnly = false)
+        public List<UserRecipePostInfo> GetPosts(int moduleId, bool approvedOnly = false)
         {
             var posts = new List<UserRecipePostInfo>();
 
             var sql = $@"
-                SELECT PostId, ModuleId, ProductId, RecipeName, CommentText, ImagePath,
+                SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
                        CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status
                 FROM {_tableName}
                 WHERE ModuleId = @ModuleId";
-
-            if (productId.HasValue)
-            {
-                sql += " AND ProductId = @ProductId";
-            }
 
             if (approvedOnly)
             {
@@ -44,11 +39,6 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components
             using (var cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.AddWithValue("@ModuleId", moduleId);
-
-                if (productId.HasValue)
-                {
-                    cmd.Parameters.AddWithValue("@ProductId", productId.Value);
-                }
 
                 if (approvedOnly)
                 {
@@ -74,14 +64,13 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand($@"
                 INSERT INTO {_tableName}
-                (ModuleId, ProductId, RecipeName, CommentText, ImagePath,
+                (ModuleId, RecipeName, CommentText, ImagePath,
                  CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status)
                 VALUES
-                (@ModuleId, @ProductId, @RecipeName, @CommentText, @ImagePath,
+                (@ModuleId, @RecipeName, @CommentText, @ImagePath,
                  @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status)", conn))
             {
                 cmd.Parameters.AddWithValue("@ModuleId", postInfo.ModuleId);
-                cmd.Parameters.AddWithValue("@ProductId", (object)postInfo.ProductId ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@RecipeName", postInfo.RecipeName);
                 cmd.Parameters.AddWithValue("@CommentText", postInfo.CommentText);
                 cmd.Parameters.AddWithValue("@ImagePath", (object)postInfo.ImagePath ?? DBNull.Value);
@@ -131,7 +120,6 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components
             {
                 PostId = Null.SetNullInteger(reader["PostId"]),
                 ModuleId = Null.SetNullInteger(reader["ModuleId"]),
-                ProductId = reader["ProductId"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["ProductId"]),
                 RecipeName = Null.SetNullString(reader["RecipeName"]),
                 CommentText = Null.SetNullString(reader["CommentText"]),
                 ImagePath = Null.SetNullString(reader["ImagePath"]),
