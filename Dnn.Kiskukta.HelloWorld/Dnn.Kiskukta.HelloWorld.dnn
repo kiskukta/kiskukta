@@ -71,32 +71,58 @@
 
 								<moduleControls>
 
-									<!-- FŐ VIEW (EZ KELL CSAK) -->
 									<moduleControl>
 										<controlKey />
-										<controlSrc>
-											Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Index.mvc
-										</controlSrc>
+										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Index.mvc</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle />
 										<controlType>View</controlType>
-										<iconFile />
-										<helpUrl />
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 
-									<!-- SETTINGS (optional) -->
 									<moduleControl>
-										<controlKey>Settings</controlKey>
-										<controlSrc>
-											Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/Settings/Settings.mvc
-										</controlSrc>
+										<controlKey>Submit</controlKey>
+										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Submit.mvc</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
-										<controlTitle>Module Settings</controlTitle>
-										<controlType>Edit</controlType>
-										<iconFile />
-										<helpUrl />
-										<viewOrder>0</viewOrder>
+										<controlTitle>Recept beküldése</controlTitle>
+										<controlType>View</controlType>
+										<viewOrder>1</viewOrder>
+									</moduleControl>
+
+									<moduleControl>
+										<controlKey>Moderation</controlKey>
+										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Moderation.mvc</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Moderáció</controlTitle>
+										<controlType>View</controlType>
+										<viewOrder>2</viewOrder>
+									</moduleControl>
+
+									<moduleControl>
+										<controlKey>Approve</controlKey>
+										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Approve.mvc</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Elfogadás</controlTitle>
+										<controlType>View</controlType>
+										<viewOrder>3</viewOrder>
+									</moduleControl>
+
+									<moduleControl>
+										<controlKey>Reject</controlKey>
+										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Reject.mvc</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Elutasítás</controlTitle>
+										<controlType>View</controlType>
+										<viewOrder>4</viewOrder>
+									</moduleControl>
+
+									<moduleControl>
+										<controlKey>Delete</controlKey>
+										<controlSrc>Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers/UserRecipePost/Delete.mvc</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Törlés</controlTitle>
+										<controlType>View</controlType>
+										<viewOrder>5</viewOrder>
 									</moduleControl>
 
 								</moduleControls>
