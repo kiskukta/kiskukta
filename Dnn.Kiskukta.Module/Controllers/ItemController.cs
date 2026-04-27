@@ -38,7 +38,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
             var userlist = UserController.GetUsers(PortalSettings.PortalId);
             var users = from user in userlist.Cast<UserInfo>().ToList()
-                        select new SelectListItem { Text = user.DisplayName, Value = user.UserID.ToString() };
+                        select new SelectListItem { Text = user.Username, Value = user.UserID.ToString() };
 
             ViewBag.Users = users;
 

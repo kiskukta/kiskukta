@@ -26,6 +26,9 @@
             hasPosts = true;
 
             <div class="recipe-card moderation-card">
+
+
+
                 @if (!string.IsNullOrWhiteSpace(post.ImagePath))
                 {
                     <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
@@ -49,6 +52,11 @@
                     </p>
 
                     <div class="moderation-actions">
+
+                        <form aria-hidden="true" method="post" tabindex="-1">
+                            <button type="submit" tabindex="-1" style="width:0;height:0;padding:0;margin:0;border:0;overflow:hidden;position:absolute;"></button>
+                        </form>
+
                         <form action="@Url.Action("Approve", "UserRecipePost", new { ctl = "Moderation" })"
                               method="post"
                               class="inline-form">
@@ -76,6 +84,8 @@
                                 Törlés
                             </button>
                         </form>
+
+
                     </div>
                 </div>
             </div>

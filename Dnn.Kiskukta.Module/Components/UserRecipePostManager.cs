@@ -20,19 +20,56 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             _tableName = DataProvider.Instance().ObjectQualifier + "UserRecipePosts";
         }
 
-        public List<UserRecipePostInfo> GetPosts(int moduleId, bool approvedOnly)
+        public List<UserRecipePostInfo> GetPosts(bool approvedOnly)
         {
+            //var posts = new List<UserRecipePostInfo>();
+
+            //var sql = @"
+            //    SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
+            //           CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status
+            //    FROM " + _tableName + @"
+            //    WHERE ModuleId = @ModuleId";
+
+            //if (approvedOnly)
+            //{
+            //    sql += " AND Status = @Status";
+            //}
+
+            //sql += " ORDER BY CreatedOnDate DESC, PostId DESC";
+
+            //using (var conn = new SqlConnection(_connectionString))
+            //using (var cmd = new SqlCommand(sql, conn))
+            //{
+            //    cmd.Parameters.AddWithValue("@ModuleId", moduleId);
+
+            //    if (approvedOnly)
+            //    {
+            //        cmd.Parameters.AddWithValue("@Status", "Approved");
+            //    }
+
+            //    conn.Open();
+
+            //    using (var reader = cmd.ExecuteReader())
+            //    {
+            //        while (reader.Read())
+            //        {
+            //            posts.Add(MapPost(reader));
+            //        }
+            //    }
+            //}
+
+            //return posts;
+
             var posts = new List<UserRecipePostInfo>();
 
             var sql = @"
-                SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
-                       CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status
-                FROM " + _tableName + @"
-                WHERE ModuleId = @ModuleId";
+        SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
+               CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status
+        FROM " + _tableName;
 
             if (approvedOnly)
             {
-                sql += " AND Status = @Status";
+                sql += " WHERE Status = @Status";
             }
 
             sql += " ORDER BY CreatedOnDate DESC, PostId DESC";
@@ -40,8 +77,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
             {
-                cmd.Parameters.AddWithValue("@ModuleId", moduleId);
-
                 if (approvedOnly)
                 {
                     cmd.Parameters.AddWithValue("@Status", "Approved");
@@ -105,6 +140,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
 
                 return cmd.ExecuteNonQuery() > 0;
             }
+
         }
 
         public void DeletePost(int postId)
