@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
@@ -20,13 +19,21 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             _postManager = new UserRecipePostManager();
         }
 
-        public ActionResult Index()
+        private bool IsAdminUser()
         {
-            var posts = _postManager.GetPosts(ModuleContext.ModuleId)
-                .Where(p => !string.IsNullOrWhiteSpace(p.Status)
-                         && p.Status.Trim().Equals("Approved", StringComparison.OrdinalIgnoreCase))
-                .ToList();
+            return User != null && (User.IsSuperUser || User.IsInRole("Administrators"));
+        }
 
+        public ActionResult Index(int? productId = null)
+        {
+            if (IsAdminUser())
+            {
+                ViewBag.Message = TempData["Message"];
+                var allPosts = _postManager.GetPosts(ModuleContext.ModuleId, productId, false);
+                return View("Moderation", allPosts);
+            }
+
+            var posts = _postManager.GetPosts(ModuleContext.ModuleId, productId, true);
             return View(posts);
         }
 
@@ -35,6 +42,11 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             if (!Request.IsAuthenticated)
             {
                 return RedirectToDefaultRoute();
+            }
+
+            if (IsAdminUser())
+            {
+                return RedirectToAction("Moderation", new { ctl = "Moderation" });
             }
 
             ViewBag.Message = TempData["Message"];
@@ -51,6 +63,11 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             if (!Request.IsAuthenticated)
             {
                 return RedirectToDefaultRoute();
+            }
+
+            if (IsAdminUser())
+            {
+                return RedirectToAction("Moderation", new { ctl = "Moderation" });
             }
 
             try
@@ -74,13 +91,15 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
                 }
 
                 var extension = Path.GetExtension(imageFile.FileName);
+
                 if (string.IsNullOrWhiteSpace(extension))
                 {
                     ViewBag.Message = "Érvénytelen fájl.";
                     return View(postInfo);
                 }
 
-                extension = extension.ToLower();
+                extension = extension.ToLowerInvariant();
+
                 var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
 
                 if (Array.IndexOf(allowedExtensions, extension) < 0)
@@ -95,21 +114,25 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
                     return View(postInfo);
                 }
 
-                var fileName = Guid.NewGuid() + extension;
-                var folderPath = Server.MapPath("~/Portals/0/KiskuktaUploads/");
-                Directory.CreateDirectory(folderPath);
-                imageFile.SaveAs(Path.Combine(folderPath, fileName));
+                var fileName = Guid.NewGuid().ToString("N") + extension;
+                var folderPath = Server.MapPath("~/Portals/" + PortalSettings.PortalId + "/KiskuktaUploads/");
 
-                postInfo.ImagePath = "/Portals/0/KiskuktaUploads/" + fileName;
+                Directory.CreateDirectory(folderPath);
+
+                var fullPath = Path.Combine(folderPath, fileName);
+                imageFile.SaveAs(fullPath);
+
+                postInfo.ImagePath = "/Portals/" + PortalSettings.PortalId + "/KiskuktaUploads/" + fileName;
                 postInfo.ModuleId = ModuleContext.ModuleId;
                 postInfo.CreatedByUserId = User.UserID;
-                postInfo.CreatedOnDate = DateTime.UtcNow;
+                postInfo.CreatedByDisplayName = User.DisplayName;
+                postInfo.CreatedOnDate = DateTime.Now;
                 postInfo.Status = "Pending";
 
                 _postManager.CreatePost(postInfo);
 
-                TempData["Message"] = "Sikeres beküldés! A poszt jóváhagyásra vár.";
-                return RedirectToAction("Submit");
+                TempData["Message"] = "Sikeres beküldés! A recept függőben van, moderációra vár.";
+                return RedirectToAction("Submit", new { ctl = "Submit" });
             }
             catch (Exception ex)
             {
@@ -118,56 +141,52 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             }
         }
 
-        public ActionResult Moderation()
+        public ActionResult Moderation(int? productId = null)
         {
-            if (User == null || (!User.IsSuperUser && !User.IsInRole("Administrators")))
+            if (!IsAdminUser())
             {
                 return RedirectToDefaultRoute();
             }
 
             ViewBag.Message = TempData["Message"];
-            var posts = _postManager.GetPosts(ModuleContext.ModuleId);
+            var posts = _postManager.GetPosts(ModuleContext.ModuleId, productId, false);
             return View(posts);
         }
 
         [HttpPost]
         public ActionResult Approve(int postId)
         {
-            if (User == null || (!User.IsSuperUser && !User.IsInRole("Administrators")))
+            if (!IsAdminUser())
             {
                 return RedirectToDefaultRoute();
             }
 
-            bool success = _postManager.UpdateStatus(postId, "Approved");
+            TempData["Message"] = _postManager.UpdateStatus(postId, "Approved")
+                ? "A recept elfogadva."
+                : "Az elfogadás nem sikerült.";
 
-            TempData["Message"] = success
-                ? "A recept jóváhagyva."
-                : "A jóváhagyás nem sikerült.";
-
-            return RedirectToAction("Moderation");
+            return RedirectToAction("Moderation", new { ctl = "Moderation" });
         }
 
         [HttpPost]
         public ActionResult Reject(int postId)
         {
-            if (User == null || (!User.IsSuperUser && !User.IsInRole("Administrators")))
+            if (!IsAdminUser())
             {
                 return RedirectToDefaultRoute();
             }
 
-            bool success = _postManager.UpdateStatus(postId, "Rejected");
-
-            TempData["Message"] = success
+            TempData["Message"] = _postManager.UpdateStatus(postId, "Rejected")
                 ? "A recept elutasítva."
                 : "Az elutasítás nem sikerült.";
 
-            return RedirectToAction("Moderation");
+            return RedirectToAction("Moderation", new { ctl = "Moderation" });
         }
 
         [HttpPost]
         public ActionResult Delete(int postId)
         {
-            if (User == null || (!User.IsSuperUser && !User.IsInRole("Administrators")))
+            if (!IsAdminUser())
             {
                 return RedirectToDefaultRoute();
             }
@@ -175,7 +194,7 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             _postManager.DeletePost(postId);
             TempData["Message"] = "A recept törölve.";
 
-            return RedirectToAction("Moderation");
+            return RedirectToAction("Moderation", new { ctl = "Moderation" });
         }
     }
 }
