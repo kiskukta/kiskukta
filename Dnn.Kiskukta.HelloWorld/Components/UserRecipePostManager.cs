@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models;
 using System;
 using System.Collections.Generic;
@@ -9,41 +10,58 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components
     public class UserRecipePostManager
     {
         private readonly string _connectionString;
+        private readonly string _tableName;
 
         public UserRecipePostManager()
         {
             _connectionString = Config.GetConnectionString();
+            _tableName = DataProvider.Instance().ObjectQualifier + "UserRecipePosts";
         }
 
-        public List<UserRecipePostInfo> GetPosts(int moduleId)
+        public List<UserRecipePostInfo> GetPosts(int moduleId, int? productId = null, bool approvedOnly = false)
         {
             var posts = new List<UserRecipePostInfo>();
 
+            var sql = $@"
+                SELECT PostId, ModuleId, ProductId, RecipeName, CommentText, ImagePath,
+                       CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status
+                FROM {_tableName}
+                WHERE ModuleId = @ModuleId";
+
+            if (productId.HasValue)
+            {
+                sql += " AND ProductId = @ProductId";
+            }
+
+            if (approvedOnly)
+            {
+                sql += " AND Status = @Status";
+            }
+
+            sql += " ORDER BY CreatedOnDate DESC, PostId DESC";
+
             using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand(@"
-                SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath, CreatedByUserId, CreatedOnDate, Status
-                FROM UserRecipePosts
-                WHERE ModuleId = @ModuleId
-                ORDER BY CreatedOnDate DESC", conn))
+            using (var cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.AddWithValue("@ModuleId", moduleId);
+
+                if (productId.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("@ProductId", productId.Value);
+                }
+
+                if (approvedOnly)
+                {
+                    cmd.Parameters.AddWithValue("@Status", "Approved");
+                }
+
                 conn.Open();
 
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        posts.Add(new UserRecipePostInfo
-                        {
-                            PostId = Null.SetNullInteger(reader["PostId"]),
-                            ModuleId = Null.SetNullInteger(reader["ModuleId"]),
-                            RecipeName = Null.SetNullString(reader["RecipeName"]),
-                            CommentText = Null.SetNullString(reader["CommentText"]),
-                            ImagePath = Null.SetNullString(reader["ImagePath"]),
-                            CreatedByUserId = Null.SetNullInteger(reader["CreatedByUserId"]),
-                            CreatedOnDate = Null.SetNullDateTime(reader["CreatedOnDate"]),
-                            Status = Null.SetNullString(reader["Status"])
-                        });
+                        posts.Add(MapPost(reader));
                     }
                 }
             }
@@ -51,55 +69,24 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components
             return posts;
         }
 
-        public UserRecipePostInfo GetPost(int postId)
-        {
-            UserRecipePostInfo post = null;
-
-            using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand(@"
-                SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath, CreatedByUserId, CreatedOnDate, Status
-                FROM UserRecipePosts
-                WHERE PostId = @PostId", conn))
-            {
-                cmd.Parameters.AddWithValue("@PostId", postId);
-                conn.Open();
-
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        post = new UserRecipePostInfo
-                        {
-                            PostId = Null.SetNullInteger(reader["PostId"]),
-                            ModuleId = Null.SetNullInteger(reader["ModuleId"]),
-                            RecipeName = Null.SetNullString(reader["RecipeName"]),
-                            CommentText = Null.SetNullString(reader["CommentText"]),
-                            ImagePath = Null.SetNullString(reader["ImagePath"]),
-                            CreatedByUserId = Null.SetNullInteger(reader["CreatedByUserId"]),
-                            CreatedOnDate = Null.SetNullDateTime(reader["CreatedOnDate"]),
-                            Status = Null.SetNullString(reader["Status"])
-                        };
-                    }
-                }
-            }
-
-            return post;
-        }
-
         public void CreatePost(UserRecipePostInfo postInfo)
         {
             using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand(@"
-                INSERT INTO UserRecipePosts
-                (ModuleId, RecipeName, CommentText, ImagePath, CreatedByUserId, CreatedOnDate, Status)
+            using (var cmd = new SqlCommand($@"
+                INSERT INTO {_tableName}
+                (ModuleId, ProductId, RecipeName, CommentText, ImagePath,
+                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status)
                 VALUES
-                (@ModuleId, @RecipeName, @CommentText, @ImagePath, @CreatedByUserId, @CreatedOnDate, @Status)", conn))
+                (@ModuleId, @ProductId, @RecipeName, @CommentText, @ImagePath,
+                 @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status)", conn))
             {
                 cmd.Parameters.AddWithValue("@ModuleId", postInfo.ModuleId);
+                cmd.Parameters.AddWithValue("@ProductId", (object)postInfo.ProductId ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@RecipeName", postInfo.RecipeName);
                 cmd.Parameters.AddWithValue("@CommentText", postInfo.CommentText);
                 cmd.Parameters.AddWithValue("@ImagePath", (object)postInfo.ImagePath ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@CreatedByUserId", postInfo.CreatedByUserId);
+                cmd.Parameters.AddWithValue("@CreatedByDisplayName", (object)postInfo.CreatedByDisplayName ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@CreatedOnDate", postInfo.CreatedOnDate);
                 cmd.Parameters.AddWithValue("@Status", postInfo.Status);
 
@@ -111,30 +98,48 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Components
         public bool UpdateStatus(int postId, string status)
         {
             using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand(@"
-        UPDATE UserRecipePosts
-        SET Status = @Status
-        WHERE PostId = @PostId", conn))
+            using (var cmd = new SqlCommand($@"
+                UPDATE {_tableName}
+                SET Status = @Status
+                WHERE PostId = @PostId", conn))
             {
                 cmd.Parameters.AddWithValue("@PostId", postId);
                 cmd.Parameters.AddWithValue("@Status", status);
 
                 conn.Open();
-                int rowsAffected = cmd.ExecuteNonQuery();
-
-                return rowsAffected > 0;
+                return cmd.ExecuteNonQuery() > 0;
             }
         }
 
         public void DeletePost(int postId)
         {
             using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand("DELETE FROM UserRecipePosts WHERE PostId = @PostId", conn))
+            using (var cmd = new SqlCommand($@"
+                DELETE FROM {_tableName}
+                WHERE PostId = @PostId", conn))
             {
                 cmd.Parameters.AddWithValue("@PostId", postId);
+
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        private UserRecipePostInfo MapPost(SqlDataReader reader)
+        {
+            return new UserRecipePostInfo
+            {
+                PostId = Null.SetNullInteger(reader["PostId"]),
+                ModuleId = Null.SetNullInteger(reader["ModuleId"]),
+                ProductId = reader["ProductId"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["ProductId"]),
+                RecipeName = Null.SetNullString(reader["RecipeName"]),
+                CommentText = Null.SetNullString(reader["CommentText"]),
+                ImagePath = Null.SetNullString(reader["ImagePath"]),
+                CreatedByUserId = Null.SetNullInteger(reader["CreatedByUserId"]),
+                CreatedByDisplayName = Null.SetNullString(reader["CreatedByDisplayName"]),
+                CreatedOnDate = Null.SetNullDateTime(reader["CreatedOnDate"]),
+                Status = Null.SetNullString(reader["Status"])
+            };
         }
     }
 }
