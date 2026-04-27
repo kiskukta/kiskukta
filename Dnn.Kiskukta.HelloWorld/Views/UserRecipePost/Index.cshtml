@@ -1,4 +1,5 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models.UserRecipePostInfo>>
+@using System.Linq
 
 <div class="kiskukta-module">
     <h2>Beküldött receptek</h2>
@@ -6,11 +7,9 @@
     @if (Request.IsAuthenticated)
     {
         <p>
-            <a href="@Url.Action("Submit")">Új recept beküldése</a>
-        </p>
-
-        <p>
-            <a href="@Url.Action("Moderation")">Moderációs nézet</a>
+            <a href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
+                Új recept beküldése
+            </a>
         </p>
     }
     else
@@ -18,34 +17,33 @@
         <p>Kérjük <a href="/Login">jelentkezz be a recept beküldéséhez.</a></p>
     }
 
-    @if (Model == null)
+    @if (Model == null || !Model.Any())
     {
         <p>Még nincs jóváhagyott recept.</p>
     }
     else
     {
-        var hasPosts = false;
-
         foreach (var post in Model)
         {
-            hasPosts = true;
-
-            <div style="border:1px solid #ddd; padding:15px; margin-bottom:15px;">
+            <div class="recipe-post">
                 <h3>@post.RecipeName</h3>
 
                 @if (!string.IsNullOrWhiteSpace(post.ImagePath))
                 {
-                    <img src="@post.ImagePath" style="max-width:300px;" />
+                    <img src="@post.ImagePath" alt="@post.RecipeName" class="recipe-image" />
                 }
 
                 <p>@post.CommentText</p>
-                <p><strong>Dátum:</strong> @post.CreatedOnDate</p>
-            </div>
-        }
 
-        if (!hasPosts)
-        {
-            <p>Még nincs jóváhagyott recept.</p>
+                <p class="recipe-meta">
+                    @if (!string.IsNullOrWhiteSpace(post.CreatedByDisplayName))
+                    {
+                        <span>Beküldő: @post.CreatedByDisplayName</span>
+                    }
+
+                    <span>Dátum: @post.CreatedOnDate.ToString("yyyy.MM.dd. HH:mm")</span>
+                </p>
+            </div>
         }
     }
 </div>
