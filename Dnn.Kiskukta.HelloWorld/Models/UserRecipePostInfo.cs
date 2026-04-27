@@ -12,8 +12,6 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models
 
         public int ModuleId { get; set; }
 
-        public int? ProductId { get; set; }
-
         public string RecipeName { get; set; }
 
         public string CommentText { get; set; }
