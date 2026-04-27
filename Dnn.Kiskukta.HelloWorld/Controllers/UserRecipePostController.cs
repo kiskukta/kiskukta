@@ -24,16 +24,16 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             return User != null && (User.IsSuperUser || User.IsInRole("Administrators"));
         }
 
-        public ActionResult Index(int? productId = null)
+        public ActionResult Index()
         {
             if (IsAdminUser())
             {
                 ViewBag.Message = TempData["Message"];
-                var allPosts = _postManager.GetPosts(ModuleContext.ModuleId, productId, false);
+                var allPosts = _postManager.GetPosts(ModuleContext.ModuleId, false);
                 return View("Moderation", allPosts);
             }
 
-            var posts = _postManager.GetPosts(ModuleContext.ModuleId, productId, true);
+            var posts = _postManager.GetPosts(ModuleContext.ModuleId, true);
             return View(posts);
         }
 
@@ -141,7 +141,7 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             }
         }
 
-        public ActionResult Moderation(int? productId = null)
+        public ActionResult Moderation()
         {
             if (!IsAdminUser())
             {
@@ -149,7 +149,7 @@ namespace Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Controllers
             }
 
             ViewBag.Message = TempData["Message"];
-            var posts = _postManager.GetPosts(ModuleContext.ModuleId, productId, false);
+            var posts = _postManager.GetPosts(ModuleContext.ModuleId, false);
             return View(posts);
         }
 
