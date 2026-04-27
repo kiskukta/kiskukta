@@ -1,10 +1,13 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models.UserRecipePostInfo>
 
 <div class="kiskukta-module">
-    <h2>Új recept beküldése</h2>
+    <div class="kiskukta-header">
+        <h2>Új recept beküldése</h2>
+        <p class="kiskukta-subtitle">Töltsd fel a recept nevét, képet és a hozzászólásodat.</p>
+    </div>
 
     <p>
-        <a href="@Url.Action("Index", "UserRecipePost")">Vissza a listához</a>
+        <a class="kiskukta-link" href="@Url.Action("Index", "UserRecipePost")">Vissza a listához</a>
     </p>
 
     @if (ViewBag.Message != null)
@@ -14,27 +17,29 @@
         </div>
     }
 
-    <form action="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })"
+    <form class="kiskukta-form"
+          action="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })"
           method="post"
           enctype="multipart/form-data">
 
         <input type="hidden" name="ModuleId" value="@Model.ModuleId" />
 
-        <p>
-            <label>Recept neve</label><br />
+        <div class="form-group">
+            <label>Recept neve</label>
             <input type="text" name="RecipeName" value="@Model.RecipeName" required />
-        </p>
+        </div>
 
-        <p>
-            <label>Komment</label><br />
+        <div class="form-group">
+            <label>Komment</label>
             <textarea name="CommentText" required>@Model.CommentText</textarea>
-        </p>
+        </div>
 
-        <p>
-            <label>Kép feltöltése</label><br />
+        <div class="form-group">
+            <label>Kép feltöltése</label>
             <input type="file" name="imageFile" accept=".jpg,.jpeg,.png,.webp" required />
-        </p>
+            <small>Engedélyezett formátumok: JPG, JPEG, PNG, WEBP. Maximum méret: 5 MB.</small>
+        </div>
 
-        <button type="submit">Beküldés</button>
+        <button class="kiskukta-button" type="submit">Beküldés</button>
     </form>
 </div>
