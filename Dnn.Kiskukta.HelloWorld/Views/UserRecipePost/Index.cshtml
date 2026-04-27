@@ -1,19 +1,24 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Kiskukta.Dnn.Dnn.Kiskukta.HelloWorld.Models.UserRecipePostInfo>>
 
 <div class="kiskukta-module">
-    <h2>Beküldött receptek</h2>
+    <div class="kiskukta-header">
+        <h2>Beküldött receptek</h2>
+        <p class="kiskukta-subtitle">Közösségi receptötletek és vélemények</p>
+    </div>
 
     @if (Request.IsAuthenticated)
     {
-        <p>
-            <a href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
+        <div class="kiskukta-action-row">
+            <a class="kiskukta-button" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
                 Új recept beküldése
             </a>
-        </p>
+        </div>
     }
     else
     {
-        <p>Kérjük <a href="/Login">jelentkezz be a recept beküldéséhez.</a></p>
+        <div class="message-box">
+            Kérjük <a href="/Login">jelentkezz be</a> a recept beküldéséhez.
+        </div>
     }
 
     @{
@@ -27,29 +32,33 @@
             hasPosts = true;
 
             <div class="recipe-post">
-                <h3>@post.RecipeName</h3>
-
                 @if (!string.IsNullOrWhiteSpace(post.ImagePath))
                 {
                     <img src="@post.ImagePath" alt="@post.RecipeName" class="recipe-image" />
                 }
 
-                <p>@post.CommentText</p>
+                <div class="recipe-content">
+                    <h3>@post.RecipeName</h3>
 
-                <p class="recipe-meta">
-                    @if (!string.IsNullOrWhiteSpace(post.CreatedByDisplayName))
-                    {
-                        <span>Beküldő: @post.CreatedByDisplayName</span>
-                    }
+                    <p class="recipe-comment">@post.CommentText</p>
 
-                    <span>Dátum: @post.CreatedOnDate.ToString("yyyy.MM.dd. HH:mm")</span>
-                </p>
+                    <div class="recipe-meta">
+                        @if (!string.IsNullOrWhiteSpace(post.CreatedByDisplayName))
+                        {
+                            <span>Beküldő: @post.CreatedByDisplayName</span>
+                        }
+
+                        <span>Dátum: @post.CreatedOnDate.ToString("yyyy.MM.dd. HH:mm")</span>
+                    </div>
+                </div>
             </div>
         }
     }
 
     @if (!hasPosts)
     {
-        <p>Még nincs jóváhagyott recept.</p>
+        <div class="empty-box">
+            Még nincs jóváhagyott recept.
+        </div>
     }
 </div>
