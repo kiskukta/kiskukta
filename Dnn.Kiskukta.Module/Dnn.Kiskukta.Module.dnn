@@ -50,37 +50,53 @@
                 <friendlyName>Dnn.Kiskukta.Module</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
-                  <moduleControl>
-                    <controlKey />
-                    <controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/Item/Index.mvc</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Edit</controlKey>
-                    <controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/Item/Edit.mvc</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Edit Content</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                    <supportsPopUps>True</supportsPopUps>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Settings</controlKey>
-                    <controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/Settings/Settings.mvc</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Dnn.Kiskukta.Module Settings</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
+					<!-- FŐ NÉZET -->
+					<moduleControl>
+						<controlKey />
+						<controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/UserRecipePost/Index.mvc</controlSrc>
+						<supportsPartialRendering>False</supportsPartialRendering>
+						<controlTitle />
+						<controlType>View</controlType>
+						<iconFile />
+						<helpUrl />
+						<viewOrder>0</viewOrder>
+					</moduleControl>
+
+					<!-- BEKÜLDÉS -->
+					<moduleControl>
+						<controlKey>Submit</controlKey>
+						<controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/UserRecipePost/Submit.mvc</controlSrc>
+						<supportsPartialRendering>False</supportsPartialRendering>
+						<controlTitle>Recept beküldése</controlTitle>
+						<controlType>View</controlType>
+						<iconFile />
+						<helpUrl />
+						<viewOrder>1</viewOrder>
+					</moduleControl>
+
+					<!-- MODERÁCIÓ -->
+					<moduleControl>
+						<controlKey>Moderation</controlKey>
+						<controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/UserRecipePost/Moderation.mvc</controlSrc>
+						<supportsPartialRendering>False</supportsPartialRendering>
+						<controlTitle>Moderáció</controlTitle>
+						<controlType>View</controlType>
+						<iconFile />
+						<helpUrl />
+						<viewOrder>2</viewOrder>
+					</moduleControl>
+
+					<!-- SETTINGS (maradhat) -->
+					<moduleControl>
+						<controlKey>Settings</controlKey>
+						<controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/Settings/Settings.mvc</controlSrc>
+						<supportsPartialRendering>False</supportsPartialRendering>
+						<controlTitle>Beállítások</controlTitle>
+						<controlType>Edit</controlType>
+						<iconFile />
+						<helpUrl />
+						<viewOrder>0</viewOrder>
+					</moduleControl>
                 </moduleControls>
               </moduleDefinition>
             </moduleDefinitions>

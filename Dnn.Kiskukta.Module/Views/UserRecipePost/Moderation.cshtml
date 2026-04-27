@@ -1,17 +1,89 @@
-﻿@{
-    Layout = null;
-}
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>>
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
+<div class="kiskukta-module">
+    <div class="kiskukta-header">
+        <h2>Moderáció</h2>
+        <p>Adminisztrátorként itt dönthetsz a beküldött receptekről.</p>
     </div>
-</body>
-</html>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="message-box">
+            @ViewBag.Message
+        </div>
+    }
+
+    @{
+        bool hasPosts = false;
+    }
+
+    @if (Model != null)
+    {
+        foreach (var post in Model)
+        {
+            hasPosts = true;
+
+            <div class="recipe-card moderation-card">
+                @if (!string.IsNullOrWhiteSpace(post.ImagePath))
+                {
+                    <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
+                }
+
+                <div class="recipe-content">
+                    <h3>@post.RecipeName</h3>
+
+                    <p><strong>Beküldő:</strong> @post.CreatedByDisplayName (@post.CreatedByUserId)</p>
+                    <p><strong>Dátum:</strong> @post.CreatedOnDate.ToString("yyyy.MM.dd. HH:mm")</p>
+
+                    <p>
+                        <strong>Állapot:</strong>
+                        <span class="status-badge status-@((post.Status ?? "").ToLower())">
+                            @post.StatusDisplay
+                        </span>
+                    </p>
+
+                    <p class="recipe-comment">
+                        @post.CommentText
+                    </p>
+
+                    <div class="moderation-actions">
+                        <form action="@Url.Action("Approve", "UserRecipePost", new { ctl = "Moderation" })"
+                              method="post"
+                              class="inline-form">
+                            <input type="hidden" name="postId" value="@post.PostId" />
+                            <button class="kiskukta-button approve-button" type="submit">
+                                Megjelenítés
+                            </button>
+                        </form>
+
+                        <form action="@Url.Action("Reject", "UserRecipePost", new { ctl = "Moderation" })"
+                              method="post"
+                              class="inline-form">
+                            <input type="hidden" name="postId" value="@post.PostId" />
+                            <button class="kiskukta-button reject-button" type="submit">
+                                Elrejtés
+                            </button>
+                        </form>
+
+                        <form action="@Url.Action("Delete", "UserRecipePost", new { ctl = "Moderation" })"
+                              method="post"
+                              class="inline-form"
+                              onsubmit="return confirm('Biztosan szeretnéd törölni ezt a receptet?');">
+                            <input type="hidden" name="postId" value="@post.PostId" />
+                            <button class="kiskukta-button delete-button" type="submit">
+                                Törlés
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    @if (!hasPosts)
+    {
+        <div class="empty-box">
+            Nincs moderálandó tartalom.
+        </div>
+    }
+</div>

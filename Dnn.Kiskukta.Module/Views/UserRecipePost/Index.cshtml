@@ -1,17 +1,66 @@
-﻿@{
-    Layout = null;
-}
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>>
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
+<div class="kiskukta-module">
+    <div class="kiskukta-header">
+        <h2>Beküldött receptek</h2>
+        <p>Közösségi receptek és hozzászólások.</p>
     </div>
-</body>
-</html>
+
+    @if (Request.IsAuthenticated)
+    {
+        <p>
+            <a class="kiskukta-button" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
+                Új recept beküldése
+            </a>
+        </p>
+    }
+    else
+    {
+        <div class="message-box">
+            Komment beküldéséhez kérjük, jelentkezz be.
+        </div>
+    }
+
+    @{
+        bool hasPosts = false;
+    }
+
+    @if (Model != null)
+    {
+        foreach (var post in Model)
+        {
+            hasPosts = true;
+
+            <div class="recipe-card">
+                @if (!string.IsNullOrWhiteSpace(post.ImagePath))
+                {
+                    <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
+                }
+
+                <div class="recipe-content">
+                    <h3>@post.RecipeName</h3>
+
+                    <p class="recipe-comment">
+                        @post.CommentText
+                    </p>
+
+                    <div class="recipe-meta">
+                        @if (!string.IsNullOrWhiteSpace(post.CreatedByDisplayName))
+                        {
+                            <span>Beküldő: @post.CreatedByDisplayName</span>
+                        }
+
+                        <span>Dátum: @post.CreatedOnDate.ToString("yyyy.MM.dd. HH:mm")</span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    @if (!hasPosts)
+    {
+        <div class="empty-box">
+            Még nincs jóváhagyott recept.
+        </div>
+    }
+</div>
