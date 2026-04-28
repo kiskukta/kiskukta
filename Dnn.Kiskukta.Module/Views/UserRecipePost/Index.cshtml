@@ -1,6 +1,6 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>>
 
-<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css" />
+<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css?v=5" />
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
@@ -10,8 +10,8 @@
 
     @if (Request.IsAuthenticated)
     {
-        <p>
-            <a class="kiskukta-link" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
+        <p class="submit-row">
+            <a class="kiskukta-button" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
                 Új recept beküldése
             </a>
         </p>
@@ -30,13 +30,11 @@
     @if (Model != null)
     {
         <div class="recipe-list">
-
             @foreach (var post in Model)
             {
                 hasPosts = true;
 
                 <div class="recipe-card">
-
                     @if (!string.IsNullOrWhiteSpace(post.ImagePath))
                     {
                         <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
@@ -56,10 +54,8 @@
                             @post.CommentText
                         </div>
                     </div>
-
                 </div>
             }
-
         </div>
     }
 

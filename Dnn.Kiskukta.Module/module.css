@@ -1,30 +1,48 @@
-
-/* FÕ KONTAINER */
 .kiskukta-module {
     max-width: 1100px;
     margin: 0 auto;
     font-family: Arial, sans-serif;
 }
 
-/* HEADER */
-.kiskukta-header h1 {
-    margin-bottom: 5px;
+.kiskukta-header {
+    text-align: center;
+    margin-bottom: 24px;
 }
 
-.kiskukta-header h3 {
-    margin-top: 0;
-    color: #555;
+    .kiskukta-header h1 {
+        margin: 0 0 10px 0;
+        font-size: 40px;
+        font-weight: 700;
+        color: #3f2a2a;
+    }
+
+    .kiskukta-header h3 {
+        margin: 0;
+        font-size: 20px;
+        color: #666;
+    }
+
+    .kiskukta-header::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: #8b4a24;
+        margin: 16px auto 0;
+        border-radius: 2px;
+    }
+
+.submit-row {
+    text-align: center;
 }
 
-/* GRID – EZ TESZI EGYMÁS MELLÉ */
 .recipe-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 26px;
 }
 
-/* KÁRTYA */
 .recipe-card {
     background: #fff;
     border-radius: 14px;
@@ -38,79 +56,172 @@
         transform: translateY(-4px);
     }
 
-/* KÉP */
 .recipe-image {
     width: 100%;
-    height: 180px;
+    height: 190px;
     object-fit: cover;
     display: block;
 }
 
-/* SZÖVEG BLOKK */
 .recipe-body {
     padding: 12px;
 }
 
-/* RECEPT NÉV */
 .recipe-title {
     font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 6px;
+    font-size: 17px;
+    margin-bottom: 7px;
+    color: #2d2d2d;
 }
 
-/* USER + DÁTUM */
 .recipe-meta-row {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     font-size: 12px;
     color: #777;
     margin-bottom: 8px;
 }
 
 .recipe-user {
-    font-weight: 500;
+    font-weight: 600;
+    color: #4a2c2a;
 }
 
 .recipe-date {
-    opacity: 0.8;
+    opacity: 0.85;
+    white-space: nowrap;
 }
 
-/* KOMMENT */
 .recipe-comment {
     font-size: 14px;
     line-height: 1.4;
     color: #333;
 }
 
-/* GOMB */
 .kiskukta-button {
     display: inline-block;
-    padding: 8px 12px;
+    padding: 9px 14px;
     background: #8b4a24;
-    color: white;
-    border-radius: 6px;
+    color: white !important;
+    border-radius: 7px;
     text-decoration: none;
-    margin-top: 10px;
+    border: none;
+    cursor: pointer;
 }
 
     .kiskukta-button:hover {
         background: #6f3b1c;
+        text-decoration: none;
     }
 
-/* ÜRES ÁLLAPOT */
+.message-box {
+    padding: 12px 14px;
+    background: #f4efe8;
+    border: 1px solid #e0d4c8;
+    margin: 14px 0 20px 0;
+    border-radius: 8px;
+    text-align: center;
+    color: #4a2c2a;
+}
+
 .empty-box {
     margin-top: 20px;
-    padding: 15px;
+    padding: 16px;
     border: 1px dashed #ccc;
     text-align: center;
     color: #777;
+    border-radius: 10px;
 }
 
-/* ÜZENET */
-.message-box {
-    padding: 10px;
-    background: #fff3cd;
-    border: 1px solid #ffeeba;
-    margin-top: 10px;
-    border-radius: 6px;
+.moderation-card {
+    border-color: #d8c5ab;
+}
+
+.status-row {
+    margin-bottom: 8px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.status-approved {
+    background: #2f7d32;
+}
+
+.status-pending {
+    background: #b97818;
+}
+
+.status-rejected {
+    background: #b97818;
+}
+
+.moderation-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.inline-form {
+    display: inline-block;
+    margin: 0;
+    flex: 1;
+}
+
+.moderation-actions .kiskukta-button {
+    width: 100%;
+    padding: 7px 8px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.approve-button {
+    background: #2f7d32;
+}
+
+    .approve-button:hover {
+        background: #256428;
+    }
+
+.reject-button {
+    background: #b97818;
+}
+
+    .reject-button:hover {
+        background: #935f13;
+    }
+
+.delete-button {
+    background: #b8372f;
+}
+
+    .delete-button:hover {
+        background: #8f2b25;
+    }
+
+@media (max-width: 700px) {
+    .kiskukta-header h1 {
+        font-size: 32px;
+    }
+
+    .recipe-list {
+        grid-template-columns: 1fr;
+    }
+
+    .moderation-actions {
+        flex-wrap: wrap;
+    }
+
+    .inline-form {
+        flex: 1 1 30%;
+    }
 }
