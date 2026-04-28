@@ -4,22 +4,22 @@
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
-        <h1>Közösségi Kedvenceink</h1>
-        <h3>Nézd meg, mit főztek a többiek!</h3>
+        <h1>Gasztro-pillanatok</h1>
+        <h3>A közösség konyhájából</h3>
     </div>
 
     @if (Request.IsAuthenticated)
     {
         <p class="submit-row">
             <a class="kiskukta-button" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
-                Új recept beküldése
+                Mutasd meg, Te mit főztél!
             </a>
         </p>
     }
     else
     {
         <div class="message-box">
-            Szólj hozzá te is! A kommenteléshez bejelentkezés szükséges.
+            Te mit főztél ma? A hozzászóláshoz bejelentkezés szükséges.
         </div>
     }
 
