@@ -4,13 +4,11 @@ using DotNetNuke.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 
 namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
 {
-	public class UserRecipePostManager
-	{
+    public class UserRecipePostManager
+    {
         private readonly string _connectionString;
         private readonly string _tableName;
 
@@ -22,57 +20,19 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
 
         public List<UserRecipePostInfo> GetPosts(bool approvedOnly)
         {
-            //var posts = new List<UserRecipePostInfo>();
-
-            //var sql = @"
-            //    SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
-            //           CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status
-            //    FROM " + _tableName + @"
-            //    WHERE ModuleId = @ModuleId";
-
-            //if (approvedOnly)
-            //{
-            //    sql += " AND Status = @Status";
-            //}
-
-            //sql += " ORDER BY CreatedOnDate DESC, PostId DESC";
-
-            //using (var conn = new SqlConnection(_connectionString))
-            //using (var cmd = new SqlCommand(sql, conn))
-            //{
-            //    cmd.Parameters.AddWithValue("@ModuleId", moduleId);
-
-            //    if (approvedOnly)
-            //    {
-            //        cmd.Parameters.AddWithValue("@Status", "Approved");
-            //    }
-
-            //    conn.Open();
-
-            //    using (var reader = cmd.ExecuteReader())
-            //    {
-            //        while (reader.Read())
-            //        {
-            //            posts.Add(MapPost(reader));
-            //        }
-            //    }
-            //}
-
-            //return posts;
-
             var posts = new List<UserRecipePostInfo>();
 
             var sql = @"
-        SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
-               CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, Category
-        FROM " + _tableName;
+                SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
+                       CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category]
+                FROM " + _tableName;
 
             if (approvedOnly)
             {
                 sql += " WHERE Status = @Status";
             }
 
-            sql += " ORDER BY CreatedOnDate DESC, PostId DESC";
+            sql += " ORDER BY PostId DESC";
 
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
@@ -101,7 +61,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             var sql = @"
                 INSERT INTO " + _tableName + @"
                 (ModuleId, RecipeName, CommentText, ImagePath,
-                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, Category)
+                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category])
                 VALUES
                 (@ModuleId, @RecipeName, @CommentText, @ImagePath,
                  @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status, @Category)";
@@ -117,7 +77,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 cmd.Parameters.AddWithValue("@CreatedByDisplayName", (object)postInfo.CreatedByDisplayName ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@CreatedOnDate", postInfo.CreatedOnDate);
                 cmd.Parameters.AddWithValue("@Status", postInfo.Status);
-                cmd.Parameters.AddWithValue("@Category", (object)postInfo.Category ?? DBNull.Value); 
+                cmd.Parameters.AddWithValue("@Category", (object)postInfo.Category ?? DBNull.Value);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -138,10 +98,8 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 cmd.Parameters.AddWithValue("@Status", status);
 
                 conn.Open();
-
                 return cmd.ExecuteNonQuery() > 0;
             }
-
         }
 
         public void DeletePost(int postId)

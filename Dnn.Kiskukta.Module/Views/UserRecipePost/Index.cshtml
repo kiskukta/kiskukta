@@ -1,6 +1,6 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>>
 
-<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css?v=5" />
+<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css?v=19" />
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
@@ -40,27 +40,27 @@
                         <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
                     }
 
-                <div class="recipe-body">
-                    <div class="recipe-title">
-                        @post.RecipeName
-                    </div>
-
-                    @if (!string.IsNullOrWhiteSpace(post.Category))
-                    {
-                        <div class="recipe-category">
-                            @post.Category
+                    <div class="recipe-body">
+                        <div class="recipe-title">
+                            @post.RecipeName
                         </div>
-                    }
 
-                    <div class="recipe-meta-row">
-                        <span class="recipe-user">@post.CreatedByDisplayName</span>
-                        <span class="recipe-date">@post.CreatedOnDate.ToString("yyyy.MM.dd.")</span>
-                    </div>
+                        @if (!string.IsNullOrWhiteSpace(post.Category))
+                        {
+                            <div class="recipe-category">
+                                @post.Category
+                            </div>
+                        }
 
-                    <div class="recipe-comment">
-                        @post.CommentText
+                        <div class="recipe-meta-row">
+                            <span class="recipe-user">@post.CreatedByDisplayName</span>
+                            <span class="recipe-date">@post.CreatedOnDate.ToString("yyyy.MM.dd.")</span>
+                        </div>
+
+                        <div class="recipe-comment">
+                            @post.CommentText
+                        </div>
                     </div>
-                </div>
                 </div>
             }
         </div>

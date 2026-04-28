@@ -1,13 +1,10 @@
 ﻿using Dnn.Kiskukta.Dnn.Kiskukta.Module.Components;
 using Dnn.Kiskukta.Dnn.Kiskukta.Module.Models;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -30,17 +27,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
         public ActionResult Index()
         {
-            //if (IsAdminUser())
-            //{
-            //    ViewBag.Message = TempData["Message"];
-
-            //    var allPosts = _postManager.GetPosts(false);
-            //    return View("Moderation", allPosts);
-            //}
-
-            //var approvedPosts = _postManager.GetPosts(true);
-            //return View(approvedPosts);
-
             if (IsAdminUser())
             {
                 return RedirectToAction("Moderation", new { ctl = "Moderation" });
@@ -48,7 +34,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
             var approvedPosts = _postManager.GetPosts(true);
             return View(approvedPosts);
-
         }
 
         public ActionResult Submit()
@@ -86,6 +71,12 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
             try
             {
+                if (string.IsNullOrWhiteSpace(postInfo.Category))
+                {
+                    ViewBag.Message = "Kategória választása kötelező.";
+                    return View(postInfo);
+                }
+
                 if (string.IsNullOrWhiteSpace(postInfo.RecipeName))
                 {
                     ViewBag.Message = "A recept nevének kitöltése kötelező.";
@@ -161,10 +152,8 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
             {
                 return RedirectToDefaultRoute();
             }
-            
-            ViewBag.Message = TempData["Message"];
 
-            //ModuleContext.ModuleId,
+            ViewBag.Message = TempData["Message"];
 
             var posts = _postManager.GetPosts(false);
             return View(posts);
@@ -178,7 +167,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                 return RedirectToDefaultRoute();
             }
 
-
             var success = _postManager.UpdateStatus(postId, "Approved");
 
             TempData["Message"] = success
@@ -186,7 +174,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                 : "A megjelenítés nem sikerült.";
 
             return RedirectToAction("Moderation", new { ctl = "Moderation" });
-
         }
 
         [HttpPost]
@@ -220,6 +207,5 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
             return RedirectToAction("Moderation", new { ctl = "Moderation" });
         }
-
     }
 }
