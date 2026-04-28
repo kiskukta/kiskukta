@@ -26,6 +26,8 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Models
 
         public string Status { get; set; }
 
+        public string Category { get; set; }
+
         [IgnoreColumn]
         public string StatusDisplay
         {

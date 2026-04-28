@@ -64,7 +64,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
 
             var sql = @"
         SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
-               CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status
+               CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, Category
         FROM " + _tableName;
 
             if (approvedOnly)
@@ -101,10 +101,10 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             var sql = @"
                 INSERT INTO " + _tableName + @"
                 (ModuleId, RecipeName, CommentText, ImagePath,
-                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status)
+                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, Category)
                 VALUES
                 (@ModuleId, @RecipeName, @CommentText, @ImagePath,
-                 @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status)";
+                 @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status, @Category)";
 
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
@@ -117,6 +117,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 cmd.Parameters.AddWithValue("@CreatedByDisplayName", (object)postInfo.CreatedByDisplayName ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@CreatedOnDate", postInfo.CreatedOnDate);
                 cmd.Parameters.AddWithValue("@Status", postInfo.Status);
+                cmd.Parameters.AddWithValue("@Category", (object)postInfo.Category ?? DBNull.Value); 
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -171,7 +172,8 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 CreatedByUserId = Null.SetNullInteger(reader["CreatedByUserId"]),
                 CreatedByDisplayName = Null.SetNullString(reader["CreatedByDisplayName"]),
                 CreatedOnDate = Null.SetNullDateTime(reader["CreatedOnDate"]),
-                Status = Null.SetNullString(reader["Status"])
+                Status = Null.SetNullString(reader["Status"]),
+                Category = Null.SetNullString(reader["Category"])
             };
         }
     }

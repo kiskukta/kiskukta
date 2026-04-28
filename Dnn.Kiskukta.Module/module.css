@@ -311,3 +311,48 @@
     padding: 11px 14px;
     font-size: 14px;
 }
+
+
+/*kategória formázás*/
+.category-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+    .category-options label {
+        cursor: pointer;
+    }
+
+    .category-options input {
+        display: none;
+    }
+
+    .category-options span {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 999px;
+        border: 1px solid #d8c5b8;
+        background: #fffaf7;
+        color: #4a2c2a;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    .category-options input:checked + span {
+        background: #8b4a24;
+        color: #fff;
+        border-color: #8b4a24;
+    }
+
+.recipe-category {
+    display: inline-block;
+    margin-bottom: 7px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(139, 74, 36, 0.12);
+    color: #8b4a24;
+    font-size: 12px;
+    font-weight: 700;
+}

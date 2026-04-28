@@ -40,20 +40,27 @@
                         <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
                     }
 
-                    <div class="recipe-body">
-                        <div class="recipe-title">
-                            @post.RecipeName
-                        </div>
-
-                        <div class="recipe-meta-row">
-                            <span class="recipe-user">@post.CreatedByDisplayName</span>
-                            <span class="recipe-date">@post.CreatedOnDate.ToString("yyyy.MM.dd.")</span>
-                        </div>
-
-                        <div class="recipe-comment">
-                            @post.CommentText
-                        </div>
+                <div class="recipe-body">
+                    <div class="recipe-title">
+                        @post.RecipeName
                     </div>
+
+                    @if (!string.IsNullOrWhiteSpace(post.Category))
+                    {
+                        <div class="recipe-category">
+                            @post.Category
+                        </div>
+                    }
+
+                    <div class="recipe-meta-row">
+                        <span class="recipe-user">@post.CreatedByDisplayName</span>
+                        <span class="recipe-date">@post.CreatedOnDate.ToString("yyyy.MM.dd.")</span>
+                    </div>
+
+                    <div class="recipe-comment">
+                        @post.CommentText
+                    </div>
+                </div>
                 </div>
             }
         </div>

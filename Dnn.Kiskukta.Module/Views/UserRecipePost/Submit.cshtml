@@ -30,6 +30,42 @@
             <input type="hidden" name="ModuleId" value="@Model.ModuleId" />
 
             <div class="form-group">
+                <label>Kategória</label>
+
+                <div class="category-options">
+                    <label>
+                        <input type="radio" name="Category" value="Leves" required />
+                        <span>Leves</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="Category" value="Főétel" />
+                        <span>Főétel</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="Category" value="Desszert" />
+                        <span>Desszert</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="Category" value="Saláta" />
+                        <span>Saláta</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="Category" value="Tészta" />
+                        <span>Tészta</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="Category" value="Vegetáriánus" />
+                        <span>Vegetáriánus</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label>Recept neve</label>
                 <input type="text" name="RecipeName" value="@Model.RecipeName" required />
             </div>
