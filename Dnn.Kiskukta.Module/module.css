@@ -17,14 +17,14 @@
 
     .kiskukta-header h1 {
         margin: 0 0 10px 0;
-        font-size: 40px;
+        font-size: 36px;
         font-weight: 700;
         color: #3f2a2a;
     }
 
     .kiskukta-header h3 {
         margin: 0;
-        font-size: 20px;
+        font-size: 18px;
         color: #666;
     }
 
@@ -59,6 +59,7 @@
 
     .kiskukta-button:hover {
         background: #6f3b1c;
+        text-decoration: none !important;
     }
 
 .kiskukta-link {
@@ -101,7 +102,7 @@
 .recipe-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
+    gap: 16px;
     margin-top: 26px;
 }
 
@@ -206,7 +207,12 @@
     background: #2f7d32;
 }
 
-.status-pending,
+/* Függõben - külön szín */
+.status-pending {
+    background: #6f6aa8;
+}
+
+/* Elrejtve */
 .status-rejected {
     background: #b97818;
 }
@@ -214,9 +220,14 @@
 .moderation-actions {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+    gap: 8px;
     margin-top: 12px;
 }
+
+    /* ez javítja az éles oldalon elcsúszó rejtett form problémát */
+    .moderation-actions form[aria-hidden="true"] {
+        display: none !important;
+    }
 
 .inline-form {
     display: block;
@@ -225,10 +236,11 @@
 
 .moderation-actions .kiskukta-button {
     width: 100%;
-    padding: 7px 5px;
-    font-size: 12px;
+    padding: 8px 6px;
+    font-size: 13px;
     line-height: 1.2;
     white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .approve-button {
@@ -343,12 +355,12 @@
 
     .moderation-actions {
         grid-template-columns: repeat(3, 1fr);
-        gap: 4px;
+        gap: 5px;
     }
 
         .moderation-actions .kiskukta-button {
             font-size: 11px;
-            padding: 6px 3px;
+            padding: 6px 4px;
         }
 }
 
