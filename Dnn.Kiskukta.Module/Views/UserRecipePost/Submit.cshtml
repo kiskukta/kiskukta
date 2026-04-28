@@ -1,15 +1,16 @@
-﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage< Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo >
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>
 
-<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css" />
+<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css?v=9" />
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
-        <h2>Oszd meg saját verziódat a közösséggel!</h2>
+        <h1>Új recept beküldése</h1>
+        <h3>Oszd meg velünk, mit készítettél!</h3>
     </div>
 
-    <p>
+    <p class="submit-back-row">
         <a class="kiskukta-link" href="@Url.Action("Index", "UserRecipePost")">
-            Vissza a közösségi oldalra
+            Vissza a közösségi kedvencekhez
         </a>
     </p>
 
@@ -20,31 +21,33 @@
         </div>
     }
 
-    <form class="kiskukta-form"
-          action="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })"
-          method="post"
-          enctype="multipart/form-data">
+    <div class="submit-card">
+        <form class="kiskukta-form"
+              action="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })"
+              method="post"
+              enctype="multipart/form-data">
 
-        <input type="hidden" name="ModuleId" value="@Model.ModuleId" />
+            <input type="hidden" name="ModuleId" value="@Model.ModuleId" />
 
-        <div class="form-group">
-            <label>Recept neve</label>
-            <input type="text" name="RecipeName" value="@Model.RecipeName" required />
-        </div>
+            <div class="form-group">
+                <label>Recept neve</label>
+                <input type="text" name="RecipeName" value="@Model.RecipeName" required />
+            </div>
 
-        <div class="form-group">
-            <label>Megjegyzés</label>
-            <textarea name="CommentText" required>@Model.CommentText</textarea>
-        </div>
+            <div class="form-group">
+                <label>Megjegyzés</label>
+                <textarea name="CommentText" required>@Model.CommentText</textarea>
+            </div>
 
-        <div class="form-group">
-            <label>Kép feltöltése</label>
-            <input type="file" name="imageFile" accept=".jpg,.jpeg,.png,.webp" required />
-            <small>JPG, JPEG, PNG vagy WEBP. Maximum 5 MB.</small>
-        </div>
+            <div class="form-group">
+                <label>Kép feltöltése</label>
+                <input type="file" name="imageFile" accept=".jpg,.jpeg,.png,.webp" required />
+                <small>JPG, JPEG, PNG vagy WEBP formátum. Maximum 5 MB.</small>
+            </div>
 
-        <button class="kiskukta-button" type="submit">
-            Beküldés
-        </button>
-    </form>
+            <button class="kiskukta-button submit-button" type="submit">
+                Beküldés
+            </button>
+        </form>
+    </div>
 </div>
