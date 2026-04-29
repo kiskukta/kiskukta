@@ -207,7 +207,7 @@
     background: #2f7d32;
 }
 
-/* Függõben - külön szín */
+/* "Függõben" szöveg színe */
 .status-pending {
     background: #6f6aa8;
 }
@@ -442,7 +442,7 @@
     flex-grow: 1;
 }
 
-/* GOMBOK LE AZ ALJÁRA */
+/* gombok alul */
 .moderation-actions {
     margin-top: auto;
 }
