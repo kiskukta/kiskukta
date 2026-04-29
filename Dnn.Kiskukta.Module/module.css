@@ -424,3 +424,25 @@
         padding: 16px;
     }
 }
+
+.recipe-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.recipe-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* komment nõhet */
+.recipe-comment {
+    flex-grow: 1;
+}
+
+/* GOMBOK LE AZ ALJÁRA */
+.moderation-actions {
+    margin-top: auto;
+}
