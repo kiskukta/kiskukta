@@ -24,7 +24,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
 
             var sql = @"
                 SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
-                       CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category]
+                       CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category], ProductBvin
                 FROM " + _tableName;
 
             if (approvedOnly)
@@ -56,15 +56,48 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             return posts;
         }
 
+        public List<ProductDropdownItem> GetProducts()
+        {
+            var products = new List<ProductDropdownItem>();
+
+            var sql = @"
+                SELECT p.bvin, pt.ProductName
+                FROM hcc_Product p
+                INNER JOIN hcc_ProductTranslations pt
+                    ON p.bvin = pt.ProductId
+                WHERE pt.ProductName IS NOT NULL
+                ORDER BY pt.ProductName";
+
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        products.Add(new ProductDropdownItem
+                        {
+                            Bvin = reader["bvin"].ToString(),
+                            ProductName = reader["ProductName"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return products;
+        }
+
         public void CreatePost(UserRecipePostInfo postInfo)
         {
             var sql = @"
                 INSERT INTO " + _tableName + @"
                 (ModuleId, RecipeName, CommentText, ImagePath,
-                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category])
+                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category], ProductBvin)
                 VALUES
                 (@ModuleId, @RecipeName, @CommentText, @ImagePath,
-                 @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status, @Category)";
+                 @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status, @Category, @ProductBvin)";
 
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
@@ -78,6 +111,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 cmd.Parameters.AddWithValue("@CreatedOnDate", postInfo.CreatedOnDate);
                 cmd.Parameters.AddWithValue("@Status", postInfo.Status);
                 cmd.Parameters.AddWithValue("@Category", (object)postInfo.Category ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@ProductBvin", (object)postInfo.ProductBvin ?? DBNull.Value);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -131,7 +165,8 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 CreatedByDisplayName = Null.SetNullString(reader["CreatedByDisplayName"]),
                 CreatedOnDate = Null.SetNullDateTime(reader["CreatedOnDate"]),
                 Status = Null.SetNullString(reader["Status"]),
-                Category = Null.SetNullString(reader["Category"])
+                Category = Null.SetNullString(reader["Category"]),
+                ProductBvin = Null.SetNullString(reader["ProductBvin"])
             };
         }
     }

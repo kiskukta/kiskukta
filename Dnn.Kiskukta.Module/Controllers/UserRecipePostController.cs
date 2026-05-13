@@ -4,6 +4,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -23,6 +24,18 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
         private bool IsAdminUser()
         {
             return User != null && User.IsSuperUser;
+        }
+
+        private List<ProductDropdownItem> LoadProductsSafe()
+        {
+            try
+            {
+                return _postManager.GetProducts();
+            }
+            catch
+            {
+                return new List<ProductDropdownItem>();
+            }
         }
 
         public ActionResult Index()
@@ -52,7 +65,8 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
             return View(new UserRecipePostInfo
             {
-                ModuleId = ModuleContext.ModuleId
+                ModuleId = ModuleContext.ModuleId,
+                Products = LoadProductsSafe()
             });
         }
 
@@ -71,9 +85,17 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
             try
             {
+                postInfo.Products = LoadProductsSafe();
+
                 if (string.IsNullOrWhiteSpace(postInfo.Category))
                 {
                     ViewBag.Message = "Kategória választása kötelező.";
+                    return View(postInfo);
+                }
+
+                if (string.IsNullOrWhiteSpace(postInfo.ProductBvin))
+                {
+                    ViewBag.Message = "Box választása kötelező.";
                     return View(postInfo);
                 }
 
@@ -141,6 +163,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
             }
             catch (Exception ex)
             {
+                postInfo.Products = LoadProductsSafe();
                 ViewBag.Message = "Hiba történt: " + ex.Message;
                 return View(postInfo);
             }

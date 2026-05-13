@@ -27,6 +27,10 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Models
         public string Status { get; set; }
 
         public string Category { get; set; }
+        public string ProductBvin { get; set; }
+
+        [IgnoreColumn]
+        public List<ProductDropdownItem> Products { get; set; }
 
         [IgnoreColumn]
         public string StatusDisplay
@@ -46,5 +50,11 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Models
                 }
             }
         }
+    }
+
+    public class ProductDropdownItem
+    {
+        public string Bvin { get; set; }
+        public string ProductName { get; set; }
     }
 }

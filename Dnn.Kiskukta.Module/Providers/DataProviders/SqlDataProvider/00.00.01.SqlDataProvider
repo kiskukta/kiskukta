@@ -27,6 +27,7 @@ BEGIN
         [CreatedOnDate] DATETIME NOT NULL DEFAULT GETDATE(),
         [Status] NVARCHAR(50) NOT NULL DEFAULT 'Pending',
         [Category] NVARCHAR(100) NULL,
+        [ProductBvin] NVARCHAR(36) NULL,
 
         CONSTRAINT [PK_UserRecipePosts] PRIMARY KEY CLUSTERED ([PostId] ASC)
     )
