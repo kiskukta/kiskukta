@@ -40,6 +40,14 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
         public ActionResult Index()
         {
+            var productBvin = ModuleContext.Configuration.ModuleSettings["ProductBvin"] as string;
+
+            if (!string.IsNullOrWhiteSpace(productBvin))
+            {
+                var filteredPosts = _postManager.GetPostsByProduct(productBvin);
+                return View(filteredPosts);
+            }
+
             if (IsAdminUser())
             {
                 return RedirectToAction("Moderation", new { ctl = "Moderation" });
@@ -87,15 +95,9 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
             {
                 postInfo.Products = LoadProductsSafe();
 
-                if (string.IsNullOrWhiteSpace(postInfo.Category))
-                {
-                    ViewBag.Message = "Kategória választása kötelező.";
-                    return View(postInfo);
-                }
-
                 if (string.IsNullOrWhiteSpace(postInfo.ProductBvin))
                 {
-                    ViewBag.Message = "Box választása kötelező.";
+                    ViewBag.Message = "Box kiválasztása kötelező.";
                     return View(postInfo);
                 }
 

@@ -1,33 +1,23 @@
 ﻿using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Models
 {
-	public class UserRecipePostInfo
-	{
+    public class UserRecipePostInfo
+    {
         public int PostId { get; set; }
-
         public int ModuleId { get; set; }
-
         public string RecipeName { get; set; }
-
         public string CommentText { get; set; }
-
         public string ImagePath { get; set; }
-
         public int CreatedByUserId { get; set; }
-
         public string CreatedByDisplayName { get; set; }
-
         public DateTime CreatedOnDate { get; set; }
-
         public string Status { get; set; }
 
-        public string Category { get; set; }
         public string ProductBvin { get; set; }
+        public string ProductName { get; set; }
 
         [IgnoreColumn]
         public List<ProductDropdownItem> Products { get; set; }

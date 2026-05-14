@@ -23,16 +23,19 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             var posts = new List<UserRecipePostInfo>();
 
             var sql = @"
-                SELECT PostId, ModuleId, RecipeName, CommentText, ImagePath,
-                       CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category], ProductBvin
-                FROM " + _tableName;
+                SELECT urp.PostId, urp.ModuleId, urp.RecipeName, urp.CommentText, urp.ImagePath,
+                       urp.CreatedByUserId, urp.CreatedByDisplayName, urp.CreatedOnDate,
+                       urp.Status, urp.ProductBvin, pt.ProductName
+                FROM " + _tableName + @" urp
+                LEFT JOIN hcc_ProductTranslations pt
+                    ON urp.ProductBvin = pt.ProductId";
 
             if (approvedOnly)
             {
-                sql += " WHERE Status = @Status";
+                sql += " WHERE urp.Status = @Status";
             }
 
-            sql += " ORDER BY PostId DESC";
+            sql += " ORDER BY urp.PostId DESC";
 
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
@@ -56,16 +59,58 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             return posts;
         }
 
+        public List<UserRecipePostInfo> GetPostsByProduct(string productBvin)
+        {
+            var posts = new List<UserRecipePostInfo>();
+
+            var sql = @"
+        SELECT urp.PostId, urp.ModuleId, urp.RecipeName, urp.CommentText, urp.ImagePath,
+               urp.CreatedByUserId, urp.CreatedByDisplayName, urp.CreatedOnDate,
+               urp.Status, urp.ProductBvin, pt.ProductName
+        FROM " + _tableName + @" urp
+        LEFT JOIN hcc_ProductTranslations pt
+            ON urp.ProductBvin = pt.ProductId
+        WHERE urp.Status = @Status
+          AND urp.ProductBvin = @ProductBvin
+        ORDER BY urp.PostId DESC";
+
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@Status", "Approved");
+                cmd.Parameters.AddWithValue("@ProductBvin", Guid.Parse(productBvin));
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        posts.Add(MapPost(reader));
+                    }
+                }
+            }
+
+            return posts;
+        }
+
         public List<ProductDropdownItem> GetProducts()
         {
             var products = new List<ProductDropdownItem>();
 
             var sql = @"
-                SELECT p.bvin, pt.ProductName
+                SELECT DISTINCT p.bvin, pt.ProductName
                 FROM hcc_Product p
                 INNER JOIN hcc_ProductTranslations pt
                     ON p.bvin = pt.ProductId
-                WHERE pt.ProductName IS NOT NULL
+                INNER JOIN hcc_ProductXCategory pc
+                    ON p.bvin = pc.ProductId
+                INNER JOIN hcc_Category c
+                    ON pc.CategoryId = c.bvin
+                INNER JOIN hcc_CategoryTranslations ct
+                    ON c.bvin = ct.CategoryId
+                WHERE ct.Name = 'Boxok'
+                  AND pt.ProductName IS NOT NULL
                 ORDER BY pt.ProductName";
 
             using (var conn = new SqlConnection(_connectionString))
@@ -94,10 +139,10 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             var sql = @"
                 INSERT INTO " + _tableName + @"
                 (ModuleId, RecipeName, CommentText, ImagePath,
-                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, [Category], ProductBvin)
+                 CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, ProductBvin)
                 VALUES
                 (@ModuleId, @RecipeName, @CommentText, @ImagePath,
-                 @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status, @Category, @ProductBvin)";
+                 @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status, @ProductBvin)";
 
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
@@ -110,8 +155,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 cmd.Parameters.AddWithValue("@CreatedByDisplayName", (object)postInfo.CreatedByDisplayName ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@CreatedOnDate", postInfo.CreatedOnDate);
                 cmd.Parameters.AddWithValue("@Status", postInfo.Status);
-                cmd.Parameters.AddWithValue("@Category", (object)postInfo.Category ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@ProductBvin", (object)postInfo.ProductBvin ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@ProductBvin", Guid.Parse(postInfo.ProductBvin));
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -165,8 +209,8 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
                 CreatedByDisplayName = Null.SetNullString(reader["CreatedByDisplayName"]),
                 CreatedOnDate = Null.SetNullDateTime(reader["CreatedOnDate"]),
                 Status = Null.SetNullString(reader["Status"]),
-                Category = Null.SetNullString(reader["Category"]),
-                ProductBvin = Null.SetNullString(reader["ProductBvin"])
+                ProductBvin = reader["ProductBvin"] == DBNull.Value ? null : reader["ProductBvin"].ToString(),
+                ProductName = reader["ProductName"] == DBNull.Value ? null : reader["ProductName"].ToString()
             };
         }
     }
