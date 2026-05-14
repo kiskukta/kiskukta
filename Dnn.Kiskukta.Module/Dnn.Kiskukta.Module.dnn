@@ -50,6 +50,7 @@
                 <friendlyName>Dnn.Kiskukta.Module</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
+					
 					<!-- FŐ NÉZET -->
 					<moduleControl>
 						<controlKey />
@@ -86,19 +87,7 @@
 						<viewOrder>2</viewOrder>
 					</moduleControl>
 
-					<!-- SETTINGS (maradhat) -->
-					<moduleControl>
-						<controlKey>Settings</controlKey>
-						<controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/Settings/Settings.mvc</controlSrc>
-						<supportsPartialRendering>False</supportsPartialRendering>
-						<controlTitle>Beállítások</controlTitle>
-						<controlType>Edit</controlType>
-						<iconFile />
-						<helpUrl />
-						<viewOrder>0</viewOrder> 
-					</moduleControl>
-					
-                </moduleControls>
+				</moduleControls>
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>

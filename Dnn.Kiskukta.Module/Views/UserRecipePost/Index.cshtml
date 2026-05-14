@@ -1,6 +1,78 @@
 ﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>>
+@using System.Globalization
+@using System.Text
+@using System.Text.RegularExpressions
+@using System.Collections.Generic
 
 <link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css?v=19" />
+
+@functions {
+    public string ToSlug(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "";
+        }
+
+        value = value.Trim().ToLowerInvariant();
+
+        var normalized = value.Normalize(NormalizationForm.FormD);
+        var builder = new StringBuilder();
+
+        foreach (var c in normalized)
+        {
+            if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+            {
+                builder.Append(c);
+            }
+        }
+
+        value = builder.ToString().Normalize(NormalizationForm.FormC);
+        value = Regex.Replace(value, @"[^a-z0-9]+", "-");
+        value = Regex.Replace(value, @"-+", "-");
+        value = value.Trim('-');
+
+        return value;
+    }
+}
+
+@{
+    var currentSlug = Request.QueryString["slug"];
+    currentSlug = ToSlug(currentSlug);
+
+    IEnumerable<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo> postsToShow = Model;
+
+    if (!string.IsNullOrWhiteSpace(currentSlug) && Model != null)
+    {
+        var filteredPosts = new List<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>();
+
+        foreach (var item in Model)
+        {
+            if (ToSlug(item.ProductName) == currentSlug)
+            {
+                filteredPosts.Add(item);
+            }
+        }
+
+        postsToShow = filteredPosts;
+    }
+
+    var hasAnyPostToShow = false;
+
+    if (postsToShow != null)
+    {
+        foreach (var item in postsToShow)
+        {
+            hasAnyPostToShow = true;
+            break;
+        }
+    }
+
+    if (!string.IsNullOrWhiteSpace(currentSlug) && !hasAnyPostToShow)
+    {
+        return;
+    }
+}
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
@@ -27,10 +99,10 @@
         bool hasPosts = false;
     }
 
-    @if (Model != null)
+    @if (postsToShow != null)
     {
         <div class="recipe-list">
-            @foreach (var post in Model)
+            @foreach (var post in postsToShow)
             {
                 hasPosts = true;
 
@@ -45,7 +117,7 @@
                             @post.RecipeName
                         </div>
 
-                        @if (!string.IsNullOrWhiteSpace(post.ProductName))
+                        @if (string.IsNullOrWhiteSpace(currentSlug) && !string.IsNullOrWhiteSpace(post.ProductName))
                         {
                             <div class="recipe-category">
                                 @post.ProductName
@@ -66,7 +138,7 @@
         </div>
     }
 
-    @if (!hasPosts)
+    @if (!hasPosts && string.IsNullOrWhiteSpace(currentSlug))
     {
         <div class="empty-box">
             Még nem érkezett vélemény. Légy te az első!

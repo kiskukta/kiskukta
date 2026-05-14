@@ -40,21 +40,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
         public ActionResult Index()
         {
-            var productBvin = ModuleContext.Configuration.ModuleSettings["ProductBvin"] as string;
-
-            if (!string.IsNullOrWhiteSpace(productBvin))
-            {
-                var filteredPosts = _postManager.GetPostsByProduct(productBvin);
-                return View(filteredPosts);
-            }
-
-            if (IsAdminUser())
-            {
-                return RedirectToAction("Moderation", new { ctl = "Moderation" });
-            }
-
-            var approvedPosts = _postManager.GetPosts(true);
-            return View(approvedPosts);
+            return View(_postManager.GetPosts(true));
         }
 
         public ActionResult Submit()

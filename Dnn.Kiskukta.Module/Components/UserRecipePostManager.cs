@@ -59,41 +59,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             return posts;
         }
 
-        public List<UserRecipePostInfo> GetPostsByProduct(string productBvin)
-        {
-            var posts = new List<UserRecipePostInfo>();
-
-            var sql = @"
-        SELECT urp.PostId, urp.ModuleId, urp.RecipeName, urp.CommentText, urp.ImagePath,
-               urp.CreatedByUserId, urp.CreatedByDisplayName, urp.CreatedOnDate,
-               urp.Status, urp.ProductBvin, pt.ProductName
-        FROM " + _tableName + @" urp
-        LEFT JOIN hcc_ProductTranslations pt
-            ON urp.ProductBvin = pt.ProductId
-        WHERE urp.Status = @Status
-          AND urp.ProductBvin = @ProductBvin
-        ORDER BY urp.PostId DESC";
-
-            using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@Status", "Approved");
-                cmd.Parameters.AddWithValue("@ProductBvin", Guid.Parse(productBvin));
-
-                conn.Open();
-
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        posts.Add(MapPost(reader));
-                    }
-                }
-            }
-
-            return posts;
-        }
-
         public List<ProductDropdownItem> GetProducts()
         {
             var products = new List<ProductDropdownItem>();
