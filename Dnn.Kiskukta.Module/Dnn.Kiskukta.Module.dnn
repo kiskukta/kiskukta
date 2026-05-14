@@ -95,8 +95,9 @@
 						<controlType>Edit</controlType>
 						<iconFile />
 						<helpUrl />
-						<viewOrder>0</viewOrder>
+						<viewOrder>0</viewOrder> 
 					</moduleControl>
+					
                 </moduleControls>
               </moduleDefinition>
             </moduleDefinitions>

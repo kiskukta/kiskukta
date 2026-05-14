@@ -1,53 +1,31 @@
-﻿/*
-' Copyright (c) 2026 Kiskukta
-'  All rights reserved.
-' 
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-' DEALINGS IN THE SOFTWARE.
-' 
-*/
-
+﻿using System.Web.Mvc;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Collections;
-using System.Web.Mvc;
-using DotNetNuke.Security;
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+using Dnn.Kiskukta.Dnn.Kiskukta.Module.Models;
 
 namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 {
-    [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
-    [DnnHandleError]
     public class SettingsController : DnnController
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult Settings()
         {
-            var settings = new Models.Settings();
-            settings.Setting1 = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("Dnn.Kiskukta.Module_Setting1", false);
-            settings.Setting2 = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("Dnn.Kiskukta.Module_Setting2", System.DateTime.Now);
+            var model = new Settings();
 
-            return View(settings);
+            model.ProductBvin =
+                ModuleContext.Configuration.ModuleSettings["ProductBvin"] as string;
+
+            return View(model);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="supportsTokens"></param>
-        /// <returns></returns>
         [HttpPost]
-        [ValidateInput(false)]
-        [DotNetNuke.Web.Mvc.Framework.ActionFilters.ValidateAntiForgeryToken]
-        public ActionResult Settings(Models.Settings settings)
+        public ActionResult Settings(Settings model)
         {
-            ModuleContext.Configuration.ModuleSettings["Dnn.Kiskukta.Module_Setting1"] = settings.Setting1.ToString();
-            ModuleContext.Configuration.ModuleSettings["Dnn.Kiskukta.Module_Setting2"] = settings.Setting2.ToUniversalTime().ToString("u");
+            ModuleController.Instance.UpdateModuleSetting(
+                ModuleContext.ModuleId,
+                "ProductBvin",
+                model.ProductBvin
+            );
 
             return RedirectToDefaultRoute();
         }
