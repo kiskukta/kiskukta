@@ -75,12 +75,12 @@
 						<viewOrder>1</viewOrder>
 					</moduleControl>
 
-					<!-- MODERÁCIÓ -->
+					<!-- MODERÁLÁS -->
 					<moduleControl>
 						<controlKey>Moderation</controlKey>
 						<controlSrc>Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers/UserRecipePost/Moderation.mvc</controlSrc>
 						<supportsPartialRendering>False</supportsPartialRendering>
-						<controlTitle>Moderáció</controlTitle>
+						<controlTitle>Moderálás</controlTitle>
 						<controlType>View</controlType>
 						<iconFile />
 						<helpUrl />

@@ -40,6 +40,9 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.IsAdminUser = IsAdminUser();
+            ViewBag.BoxProducts = LoadProductsSafe();
+
             return View(_postManager.GetPosts(true));
         }
 
@@ -84,25 +87,25 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                 if (string.IsNullOrWhiteSpace(postInfo.ProductBvin))
                 {
                     ViewBag.Message = "Box kiválasztása kötelező.";
-                    return View(postInfo);
+                    return View("Submit", postInfo);
                 }
 
                 if (string.IsNullOrWhiteSpace(postInfo.RecipeName))
                 {
                     ViewBag.Message = "A recept nevének kitöltése kötelező.";
-                    return View(postInfo);
+                    return View("Submit", postInfo);
                 }
 
                 if (string.IsNullOrWhiteSpace(postInfo.CommentText))
                 {
                     ViewBag.Message = "Megjegyzés írása kötelező.";
-                    return View(postInfo);
+                    return View("Submit", postInfo);
                 }
 
                 if (imageFile == null || imageFile.ContentLength == 0)
                 {
                     ViewBag.Message = "A kép feltöltése kötelező.";
-                    return View(postInfo);
+                    return View("Submit", postInfo);
                 }
 
                 var extension = Path.GetExtension(imageFile.FileName);
@@ -110,7 +113,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                 if (string.IsNullOrWhiteSpace(extension))
                 {
                     ViewBag.Message = "Érvénytelen fájl.";
-                    return View(postInfo);
+                    return View("Submit", postInfo);
                 }
 
                 extension = extension.ToLowerInvariant();
@@ -120,13 +123,13 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                 if (Array.IndexOf(allowedExtensions, extension) < 0)
                 {
                     ViewBag.Message = "Csak .jpg, .jpeg, .png vagy .webp fájl tölthető fel.";
-                    return View(postInfo);
+                    return View("Submit", postInfo);
                 }
 
                 if (imageFile.ContentLength > 5 * 1024 * 1024)
                 {
                     ViewBag.Message = "A fájl túl nagy. Maximum 5 MB lehet.";
-                    return View(postInfo);
+                    return View("Submit", postInfo);
                 }
 
                 var fileName = Guid.NewGuid().ToString("N") + extension;
@@ -146,14 +149,20 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
                 _postManager.CreatePost(postInfo);
 
-                TempData["Message"] = "Sikeres beküldés! Hozzászólásod jóváhagyásra vár.";
-                return RedirectToAction("Submit", new { ctl = "Submit" });
+                ViewBag.Message = "Sikeres beküldés! Hozzászólásod jóváhagyásra vár.";
+
+                return View("Submit", new UserRecipePostInfo
+                {
+                    ModuleId = ModuleContext.ModuleId,
+                    Products = LoadProductsSafe()
+                });
             }
             catch (Exception ex)
             {
                 postInfo.Products = LoadProductsSafe();
                 ViewBag.Message = "Hiba történt: " + ex.Message;
-                return View(postInfo);
+
+                return View("Submit", postInfo);
             }
         }
 
