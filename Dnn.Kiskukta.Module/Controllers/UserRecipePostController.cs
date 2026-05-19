@@ -90,12 +90,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                     return View("Submit", postInfo);
                 }
 
-                if (string.IsNullOrWhiteSpace(postInfo.RecipeName))
-                {
-                    ViewBag.Message = "A recept nevének kitöltése kötelező.";
-                    return View("Submit", postInfo);
-                }
-
                 if (string.IsNullOrWhiteSpace(postInfo.CommentText))
                 {
                     ViewBag.Message = "Megjegyzés írása kötelező.";

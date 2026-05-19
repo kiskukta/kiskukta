@@ -23,7 +23,7 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             var posts = new List<UserRecipePostInfo>();
 
             var sql = @"
-                SELECT urp.PostId, urp.ModuleId, urp.RecipeName, urp.CommentText, urp.ImagePath,
+                SELECT urp.PostId, urp.ModuleId, urp.CommentText, urp.ImagePath,
                        urp.CreatedByUserId, urp.CreatedByDisplayName, urp.CreatedOnDate,
                        urp.Status, urp.ProductBvin, pt.ProductName
                 FROM " + _tableName + @" urp
@@ -103,17 +103,16 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
         {
             var sql = @"
                 INSERT INTO " + _tableName + @"
-                (ModuleId, RecipeName, CommentText, ImagePath,
+                (ModuleId, CommentText, ImagePath,
                  CreatedByUserId, CreatedByDisplayName, CreatedOnDate, Status, ProductBvin)
                 VALUES
-                (@ModuleId, @RecipeName, @CommentText, @ImagePath,
+                (@ModuleId, @CommentText, @ImagePath,
                  @CreatedByUserId, @CreatedByDisplayName, @CreatedOnDate, @Status, @ProductBvin)";
 
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.AddWithValue("@ModuleId", postInfo.ModuleId);
-                cmd.Parameters.AddWithValue("@RecipeName", postInfo.RecipeName);
                 cmd.Parameters.AddWithValue("@CommentText", postInfo.CommentText);
                 cmd.Parameters.AddWithValue("@ImagePath", (object)postInfo.ImagePath ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@CreatedByUserId", postInfo.CreatedByUserId);
@@ -167,7 +166,6 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Components
             {
                 PostId = Null.SetNullInteger(reader["PostId"]),
                 ModuleId = Null.SetNullInteger(reader["ModuleId"]),
-                RecipeName = Null.SetNullString(reader["RecipeName"]),
                 CommentText = Null.SetNullString(reader["CommentText"]),
                 ImagePath = Null.SetNullString(reader["ImagePath"]),
                 CreatedByUserId = Null.SetNullInteger(reader["CreatedByUserId"]),

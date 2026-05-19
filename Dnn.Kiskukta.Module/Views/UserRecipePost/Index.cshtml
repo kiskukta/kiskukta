@@ -38,9 +38,10 @@
 }
 
 @{
-    var currentSlug = ToSlug(Request.QueryString["slug"]);
-    var isProductPage = !string.IsNullOrWhiteSpace(currentSlug);
+    var currentSlug = Request.QueryString["slug"];
+    currentSlug = ToSlug(currentSlug);
 
+    var isProductPage = !string.IsNullOrWhiteSpace(currentSlug);
     var isAdminUser = ViewBag.IsAdminUser != null && (bool)ViewBag.IsAdminUser;
     var boxProducts = ViewBag.BoxProducts as List<ProductDropdownItem>;
 
@@ -82,18 +83,9 @@
 }
 
 <div class="kiskukta-module">
-
     <div class="kiskukta-header">
-        @if (isProductPage)
-        {
-            <h1>Vélemények</h1>
-            <h3>Te hogyan készítetted el ezt a boxot?</h3>
-        }
-        else
-        {
-            <h1>Gasztro-pillanatok</h1>
-            <h3>A közösség konyhájából</h3>
-        }
+        <h1>Receptfal</h1>
+        <h3>Boxjaink alapján készült receptek</h3>
     </div>
 
     @if (isAdminUser)
@@ -117,14 +109,18 @@
         else
         {
             <div class="message-box">
-                A hozzászóláshoz bejelentkezés szükséges.
+                Te mit főztél ma? A hozzászóláshoz bejelentkezés szükséges.
             </div>
         }
     }
     else
     {
         <div class="message-box">
-            Recept beküldése a Gasztro-pillanatok oldalon érhető el.
+            Recept beküldése a
+            <a class="kiskukta-link" href="/receptfal">
+                Receptfal
+            </a>
+            oldalon érhető el.
         </div>
     }
 
@@ -140,21 +136,13 @@
                 hasPosts = true;
 
                 <div class="recipe-card">
-
                     @if (!string.IsNullOrWhiteSpace(post.ImagePath))
                     {
-                        <img class="recipe-image"
-                             src="@post.ImagePath"
-                             alt="@post.RecipeName" />
+                        <img class="recipe-image" src="@post.ImagePath" alt="@post.ProductName" />
                     }
 
                     <div class="recipe-body">
-
-                        <div class="recipe-title">
-                            @post.RecipeName
-                        </div>
-
-                        @if (!isProductPage && !string.IsNullOrWhiteSpace(post.ProductName))
+                        @if (string.IsNullOrWhiteSpace(currentSlug) && !string.IsNullOrWhiteSpace(post.ProductName))
                         {
                             <div class="recipe-category">
                                 @post.ProductName
@@ -162,21 +150,14 @@
                         }
 
                         <div class="recipe-meta-row">
-                            <span class="recipe-user">
-                                @post.CreatedByDisplayName
-                            </span>
-
-                            <span class="recipe-date">
-                                @post.CreatedOnDate.ToString("yyyy.MM.dd.")
-                            </span>
+                            <span class="recipe-user">@post.CreatedByDisplayName</span>
+                            <span class="recipe-date">@post.CreatedOnDate.ToString("yyyy.MM.dd.")</span>
                         </div>
 
                         <div class="recipe-comment">
                             @post.CommentText
                         </div>
-
                     </div>
-
                 </div>
             }
         </div>
@@ -188,5 +169,4 @@
             Még nem érkezett vélemény. Légy te az első!
         </div>
     }
-
 </div>

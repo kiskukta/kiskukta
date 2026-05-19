@@ -19,7 +19,6 @@ BEGIN
     (
         [PostId] INT IDENTITY(1,1) NOT NULL,
         [ModuleId] INT NOT NULL,
-        [RecipeName] NVARCHAR(200) NOT NULL,
         [CommentText] NVARCHAR(1000) NOT NULL,
         [ImagePath] NVARCHAR(500) NULL,
         [CreatedByUserId] INT NOT NULL,

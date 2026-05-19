@@ -4,7 +4,7 @@
 
 <div class="kiskukta-module">
     <div class="kiskukta-header">
-        <h1>Moderálás</h1>
+        <h1>Moderáció</h1>
         <h3>Itt kezelheted a beküldött recepteket.</h3>
     </div>
 
@@ -29,14 +29,10 @@
                 <div class="recipe-card moderation-card">
                     @if (!string.IsNullOrWhiteSpace(post.ImagePath))
                     {
-                        <img class="recipe-image" src="@post.ImagePath" alt="@post.RecipeName" />
+                        <img class="recipe-image" src="@post.ImagePath" alt="@post.ProductName" />
                     }
 
                     <div class="recipe-body">
-                        <div class="recipe-title">
-                            @post.RecipeName
-                        </div>
-
                         @if (!string.IsNullOrWhiteSpace(post.ProductName))
                         {
                             <div class="recipe-category">
