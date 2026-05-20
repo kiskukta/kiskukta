@@ -64,6 +64,7 @@
                                   method="post"
                                   class="inline-form">
                                 <input type="hidden" name="postId" value="@post.PostId" />
+                                <input type="hidden" name="ReturnUrl" value="@Request.RawUrl" />
                                 <button class="kiskukta-button approve-button" type="submit">
                                     Megjelenítés
                                 </button>
@@ -73,6 +74,7 @@
                                   method="post"
                                   class="inline-form">
                                 <input type="hidden" name="postId" value="@post.PostId" />
+                                <input type="hidden" name="ReturnUrl" value="@Request.RawUrl" />
                                 <button class="kiskukta-button reject-button" type="submit">
                                     Elrejtés
                                 </button>
@@ -81,8 +83,9 @@
                             <form action="@Url.Action("Delete", "UserRecipePost", new { ctl = "Moderation" })"
                                   method="post"
                                   class="inline-form"
-                                  onsubmit="return confirm('Biztosan szeretnéd törölni ezt a receptet?');">
+                                  onsubmit="return confirm('Biztosan szeretnéd törölni ezt a beküldést?');">
                                 <input type="hidden" name="postId" value="@post.PostId" />
+                                <input type="hidden" name="ReturnUrl" value="@Request.RawUrl" />
                                 <button class="kiskukta-button delete-button" type="submit">
                                     Törlés
                                 </button>

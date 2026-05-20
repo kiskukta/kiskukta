@@ -169,12 +169,11 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
 
             ViewBag.Message = TempData["Message"];
 
-            var posts = _postManager.GetPosts(false);
-            return View(posts);
+            return View(_postManager.GetPosts(false));
         }
 
         [HttpPost]
-        public ActionResult Approve(int postId)
+        public ActionResult Approve(int postId, string ReturnUrl)
         {
             if (!IsAdminUser())
             {
@@ -187,11 +186,16 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                 ? "Hozzászólás megjelenítve."
                 : "A megjelenítés nem sikerült.";
 
+            if (!string.IsNullOrWhiteSpace(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+            {
+                return Redirect(ReturnUrl);
+            }
+
             return RedirectToAction("Moderation", new { ctl = "Moderation" });
         }
 
         [HttpPost]
-        public ActionResult Reject(int postId)
+        public ActionResult Reject(int postId, string ReturnUrl)
         {
             if (!IsAdminUser())
             {
@@ -204,11 +208,16 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
                 ? "Hozzászólás elrejtve."
                 : "Az elrejtés nem sikerült.";
 
+            if (!string.IsNullOrWhiteSpace(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+            {
+                return Redirect(ReturnUrl);
+            }
+
             return RedirectToAction("Moderation", new { ctl = "Moderation" });
         }
 
         [HttpPost]
-        public ActionResult Delete(int postId)
+        public ActionResult Delete(int postId, string ReturnUrl)
         {
             if (!IsAdminUser())
             {
@@ -218,6 +227,11 @@ namespace Dnn.Kiskukta.Dnn.Kiskukta.Module.Controllers
             _postManager.DeletePost(postId);
 
             TempData["Message"] = "A recept törölve.";
+
+            if (!string.IsNullOrWhiteSpace(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+            {
+                return Redirect(ReturnUrl);
+            }
 
             return RedirectToAction("Moderation", new { ctl = "Moderation" });
         }
