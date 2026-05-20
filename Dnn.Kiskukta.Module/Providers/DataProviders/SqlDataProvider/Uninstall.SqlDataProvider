@@ -1,0 +1,5 @@
+﻿IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRecipePosts]', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE {databaseOwner}[{objectQualifier}UserRecipePosts]
+END
+GO

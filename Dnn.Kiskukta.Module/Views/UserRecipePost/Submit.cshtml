@@ -1,0 +1,66 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>
+
+<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css?v=19" />
+
+<div class="kiskukta-module">
+    <div class="kiskukta-header">
+        <h1>Új recept beküldése</h1>
+        <h3>Oszd meg velünk, mit készítettél!</h3>
+    </div>
+
+    <p class="submit-back-row">
+        <a class="kiskukta-link" href="@Url.Action("Index", "UserRecipePost")">
+            Vissza a Receptfalra
+        </a>
+    </p>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="message-box">
+            @ViewBag.Message
+        </div>
+    }
+
+    <div class="submit-card">
+        <form class="kiskukta-form"
+              action="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })"
+              method="post"
+              enctype="multipart/form-data">
+
+            <input type="hidden" name="ModuleId" value="@Model.ModuleId" />
+
+            <div class="form-group">
+                <label>Box kiválasztása</label>
+
+                <select name="ProductBvin" class="category-select" required>
+                    <option value="">-- Válassz boxot --</option>
+
+                    @if (Model.Products != null)
+                    {
+                        foreach (var product in Model.Products)
+                        {
+                            <option value="@product.Bvin" @(Model.ProductBvin == product.Bvin ? "selected" : "")>
+                                @product.ProductName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Megjegyzés</label>
+                <textarea name="CommentText" required>@Model.CommentText</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Kép feltöltése</label>
+                <input type="file" name="imageFile" accept=".jpg,.jpeg,.png,.webp" required />
+                <small>JPG, JPEG, PNG vagy WEBP formátum. Maximum 5 MB.</small>
+            </div>
+
+            <button class="kiskukta-button submit-button" type="submit">
+                Beküldés
+            </button>
+        </form>
+    </div>
+</div>

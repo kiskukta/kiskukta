@@ -1,0 +1,459 @@
+.kiskukta-module {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+    .kiskukta-module a {
+        text-decoration: none !important;
+    }
+
+/* HEADER */
+
+.kiskukta-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+    .kiskukta-header h1 {
+        margin: 0 0 10px 0;
+        font-size: 36px;
+        font-weight: 700;
+        color: #3f2a2a;
+    }
+
+    .kiskukta-header h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #666;
+    }
+
+    .kiskukta-header::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: #8b4a24;
+        margin: 16px auto 0;
+        border-radius: 2px;
+    }
+
+/* BUTTON / LINK */
+
+.submit-row,
+.submit-back-row {
+    text-align: center;
+}
+
+.kiskukta-button {
+    display: inline-block;
+    padding: 9px 14px;
+    background: #8b4a24;
+    color: #fff !important;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none !important;
+}
+
+    .kiskukta-button:hover {
+        background: #6f3b1c;
+        text-decoration: none !important;
+    }
+
+.kiskukta-link {
+    color: #4a2c2a !important;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 8px;
+    background: rgba(139, 74, 36, 0.10);
+    text-decoration: none !important;
+}
+
+    .kiskukta-link:hover {
+        color: #8b4a24 !important;
+        background: rgba(139, 74, 36, 0.18);
+    }
+
+/* MESSAGE */
+
+.message-box {
+    padding: 12px 14px;
+    background: #f4efe8;
+    border: 1px solid #e0d4c8;
+    margin: 14px 0 20px 0;
+    border-radius: 8px;
+    text-align: center;
+    color: #4a2c2a;
+}
+
+.empty-box {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px dashed #ccc;
+    text-align: center;
+    color: #777;
+    border-radius: 10px;
+}
+
+/* GRID */
+
+.recipe-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 26px;
+}
+
+/* CARD */
+
+.recipe-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .recipe-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    }
+
+.recipe-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.recipe-body {
+    padding: 12px;
+}
+
+.recipe-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: #2d2d2d;
+}
+
+.recipe-category {
+    display: inline-block;
+    width: auto;
+    max-width: max-content;
+    margin-bottom: 8px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(139, 74, 36, 0.12);
+    color: #8b4a24;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.recipe-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.recipe-user {
+    font-weight: 600;
+    color: #4a2c2a;
+    word-break: break-word;
+}
+
+.recipe-date {
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+.recipe-comment {
+    font-size: 14px;
+    line-height: 1.35;
+    color: #333;
+    word-break: break-word;
+}
+
+/* MODERATION */
+
+.moderation-card {
+    border-color: #d8c5ab;
+}
+
+.status-row {
+    margin-bottom: 8px;
+}
+
+.status-badge {
+    display: inline-block;
+    width: auto;
+    max-width: max-content;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-approved {
+    background: #2f7d32;
+}
+
+/* "Függõben" szöveg színe */
+.status-pending {
+    background: #6f6aa8;
+}
+
+/* Elrejtve */
+.status-rejected {
+    background: #b97818;
+}
+
+.moderation-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+}
+
+    /* ez javítja az éles oldalon elcsúszó rejtett form problémát */
+    .moderation-actions form[aria-hidden="true"] {
+        display: none !important;
+    }
+
+.inline-form {
+    display: block;
+    margin: 0;
+}
+
+.moderation-actions .kiskukta-button {
+    width: 100%;
+    padding: 8px 6px;
+    font-size: 13px;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.approve-button {
+    background: #2f7d32;
+}
+
+    .approve-button:hover {
+        background: #256428;
+    }
+
+.reject-button {
+    background: #b97818;
+}
+
+    .reject-button:hover {
+        background: #935f13;
+    }
+
+.delete-button {
+    background: #b8372f;
+}
+
+    .delete-button:hover {
+        background: #8f2b25;
+    }
+
+/* SUBMIT */
+
+.submit-card {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 22px;
+    background: #fff;
+    border: 1px solid #e0d4c8;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.kiskukta-form {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 7px;
+        color: #4a2c2a;
+        font-weight: 700;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="file"],
+    .form-group textarea,
+    .category-select {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #d8c5b8;
+        border-radius: 10px;
+        padding: 11px 12px;
+        font-size: 14px;
+        background: #fffaf7;
+        color: #333;
+        outline: none;
+    }
+
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus,
+        .category-select:focus {
+            border-color: #8b4a24;
+            box-shadow: 0 0 0 3px rgba(139, 74, 36, 0.12);
+        }
+
+    .form-group textarea {
+        height: 130px;
+        resize: none;
+        overflow-y: auto;
+        line-height: 1.5;
+    }
+
+    .form-group small {
+        display: block;
+        margin-top: 6px;
+        color: #777;
+        font-size: 12px;
+    }
+
+.category-select {
+    cursor: pointer;
+}
+
+.submit-button {
+    width: 100%;
+    margin-top: 6px;
+    padding: 11px 14px;
+    font-size: 14px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .recipe-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 14px;
+    }
+
+    .recipe-image {
+        height: 145px;
+    }
+
+    .moderation-actions {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+
+        .moderation-actions .kiskukta-button {
+            font-size: 11px;
+            padding: 6px 4px;
+        }
+}
+
+@media (max-width: 520px) {
+    .kiskukta-header h1 {
+        font-size: 30px;
+    }
+
+    .kiskukta-header h3 {
+        font-size: 17px;
+    }
+
+    .recipe-list {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 8px;
+    }
+
+    .recipe-image {
+        height: 110px;
+    }
+
+    .recipe-body {
+        padding: 9px;
+    }
+
+    .recipe-title {
+        font-size: 14px;
+    }
+
+    .recipe-meta-row {
+        display: block;
+        font-size: 11px;
+    }
+
+    .recipe-date {
+        display: block;
+        margin-top: 3px;
+    }
+
+    .recipe-comment {
+        font-size: 12px;
+    }
+
+    .recipe-category,
+    .status-badge {
+        font-size: 11px;
+        padding: 3px 7px;
+    }
+
+    .moderation-actions {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3px;
+    }
+
+        .moderation-actions .kiskukta-button {
+            font-size: 10px;
+            padding: 5px 2px;
+        }
+
+    .submit-card {
+        padding: 16px;
+    }
+}
+
+.recipe-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.recipe-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* komment nõhet */
+.recipe-comment {
+    flex-grow: 1;
+}
+
+/* gombok alul */
+.moderation-actions {
+    margin-top: auto;
+}
+
+.product-recipe-view .recipe-list {
+    justify-content: start;
+}
+
+.moderation-card .recipe-image {
+    height: 160px;
+    min-height: 160px;
+    flex-shrink: 0;
+    object-fit: cover;
+}

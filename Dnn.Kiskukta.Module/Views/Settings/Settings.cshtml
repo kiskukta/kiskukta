@@ -1,0 +1,49 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.Settings>
+
+<h2 id="dnnSitePanel-BasicSettings" class="dnnFormSectionHead">
+    <a href="" class="dnnSectionExpanded">
+        @Dnn.LocalizeString("BasicSettings")
+    </a>
+</h2>
+
+<fieldset>
+
+    <div class="dnnFormItem">
+        <label for="ProductBvin" class="col-md-2 control-label">
+            Box ProductBvin
+        </label>
+
+        <input type="text"
+               id="ProductBvin"
+               name="ProductBvin"
+               value="@Model.ProductBvin" />
+    </div>
+
+    <div class="dnnFormItem">
+        <label for="Setting1" class="col-md-2 control-label">
+            @Dnn.LocalizeString("Setting1")
+        </label>
+
+        <input type="checkbox"
+               id="Setting1"
+               name="Setting1"
+               value="true"
+               @(Model.Setting1 ? "checked=\"checked\"" : "") />
+
+        <input type="hidden"
+               name="Setting1"
+               value="false" />
+    </div>
+
+    <div class="dnnFormItem">
+        <label for="Setting2" class="col-md-2 control-label">
+            @Dnn.LocalizeString("Setting2")
+        </label>
+
+        <input type="text"
+               id="Setting2"
+               name="Setting2"
+               value="@Model.Setting2" />
+    </div>
+
+</fieldset>

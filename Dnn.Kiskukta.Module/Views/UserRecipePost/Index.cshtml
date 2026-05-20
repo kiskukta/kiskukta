@@ -1,0 +1,172 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<IEnumerable<Dnn.Kiskukta.Dnn.Kiskukta.Module.Models.UserRecipePostInfo>>
+@using System.Globalization
+@using System.Text
+@using System.Text.RegularExpressions
+@using System.Collections.Generic
+@using Dnn.Kiskukta.Dnn.Kiskukta.Module.Models
+
+<link rel="stylesheet" href="/DesktopModules/MVC/Dnn.Kiskukta.Module/module.css?v=19" />
+
+@functions {
+    public string ToSlug(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "";
+        }
+
+        value = value.Trim().ToLowerInvariant();
+
+        var normalized = value.Normalize(NormalizationForm.FormD);
+        var builder = new StringBuilder();
+
+        foreach (var c in normalized)
+        {
+            if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+            {
+                builder.Append(c);
+            }
+        }
+
+        value = builder.ToString().Normalize(NormalizationForm.FormC);
+        value = Regex.Replace(value, @"[^a-z0-9]+", "-");
+        value = Regex.Replace(value, @"-+", "-");
+        value = value.Trim('-');
+
+        return value;
+    }
+}
+
+@{
+    var currentSlug = Request.QueryString["slug"];
+    currentSlug = ToSlug(currentSlug);
+
+    var isProductPage = !string.IsNullOrWhiteSpace(currentSlug);
+    var isAdminUser = ViewBag.IsAdminUser != null && (bool)ViewBag.IsAdminUser;
+    var boxProducts = ViewBag.BoxProducts as List<ProductDropdownItem>;
+
+    var isBoxPage = false;
+
+    if (isProductPage && boxProducts != null)
+    {
+        foreach (var product in boxProducts)
+        {
+            if (ToSlug(product.ProductName) == currentSlug)
+            {
+                isBoxPage = true;
+                break;
+            }
+        }
+    }
+
+    if (isProductPage && !isBoxPage)
+    {
+        return;
+    }
+
+    IEnumerable<UserRecipePostInfo> postsToShow = Model;
+
+    if (isProductPage && Model != null)
+    {
+        var filteredPosts = new List<UserRecipePostInfo>();
+
+        foreach (var item in Model)
+        {
+            if (ToSlug(item.ProductName) == currentSlug)
+            {
+                filteredPosts.Add(item);
+            }
+        }
+
+        postsToShow = filteredPosts;
+    }
+}
+
+<div class="kiskukta-module @(isProductPage ? "product-recipe-view" : "")">
+    <div class="kiskukta-header">
+        <h1>Receptfal</h1>
+        <h3>Boxjaink alapján készült receptek</h3>
+    </div>
+
+    @if (isAdminUser)
+    {
+        <p class="submit-row">
+            <a class="kiskukta-button" href="@Url.Action("Moderation", "UserRecipePost", new { ctl = "Moderation" })">
+                Moderálás
+            </a>
+        </p>
+    }
+    else if (!isProductPage)
+    {
+        if (Request.IsAuthenticated)
+        {
+            <p class="submit-row">
+                <a class="kiskukta-button" href="@Url.Action("Submit", "UserRecipePost", new { ctl = "Submit" })">
+                    Mutasd meg, Te mit főztél!
+                </a>
+            </p>
+        }
+        else
+        {
+            <div class="message-box">
+                Te mit főztél ma? A hozzászóláshoz bejelentkezés szükséges.
+            </div>
+        }
+    }
+    else
+    {
+        <div class="message-box">
+            Recept beküldése a
+            <a class="kiskukta-link" href="/receptfal">
+                Receptfal
+            </a>
+            oldalon érhető el.
+        </div>
+    }
+
+    @{
+        bool hasPosts = false;
+    }
+
+    @if (postsToShow != null)
+    {
+        <div class="recipe-list">
+            @foreach (var post in postsToShow)
+            {
+                hasPosts = true;
+
+                <div class="recipe-card">
+                    @if (!string.IsNullOrWhiteSpace(post.ImagePath))
+                    {
+                        <img class="recipe-image" src="@post.ImagePath" alt="@post.ProductName" />
+                    }
+
+                    <div class="recipe-body">
+                        @if (string.IsNullOrWhiteSpace(currentSlug) && !string.IsNullOrWhiteSpace(post.ProductName))
+                        {
+                            <div class="recipe-category">
+                                @post.ProductName
+                            </div>
+                        }
+
+                        <div class="recipe-meta-row">
+                            <span class="recipe-user">@post.CreatedByDisplayName</span>
+                            <span class="recipe-date">@post.CreatedOnDate.ToString("yyyy.MM.dd.")</span>
+                        </div>
+
+                        <div class="recipe-comment">
+                            @post.CommentText
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (!hasPosts)
+    {
+        <div class="empty-box">
+            Még nem érkezett vélemény. Légy te az első!
+        </div>
+    }
+</div>
