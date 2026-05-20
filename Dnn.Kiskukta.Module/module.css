@@ -446,3 +446,14 @@
 .moderation-actions {
     margin-top: auto;
 }
+
+.product-recipe-view .recipe-list {
+    justify-content: start;
+}
+
+.moderation-card .recipe-image {
+    height: 160px;
+    min-height: 160px;
+    flex-shrink: 0;
+    object-fit: cover;
+}
